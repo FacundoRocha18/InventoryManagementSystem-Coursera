@@ -56,16 +56,42 @@ Develop an inventory management system where the user can manage products throug
 
 ### Major functions
 
-- Products Management: Creating, updating, and removing product data.
+- Product Management: Creating, updating, and removing product data.
 - Stock Operations: Handling inventory quantity changes like sells, restock, etc.
 - System Navigation: User interface and input flow.
 
 ### Major functions break-down
   
-- Program: This module will initialize the application, display the User Interface, and coordinate the different modules.
-- UserInterface
-- Products
-- Inventory
+- **Program** (Entry Point):
+  - **Purpose**: It will be the central controller for the app.
+  - **Responsibilities**:
+    - Starts the application.
+    - Calls the UI component to display the main menu.
+    - Coordinates actions between the different modules.
+    - Loops until the user chooses to exit.
+
+- **UserInterface**:
+  - **Purpose**: Handles all input/output interactions with the user.
+  - **Responsibilities**:
+    - Display menus and prompts.
+    - Collect and validate user input.
+    - Display results, error messages, and confirmation messages.
+    - Improve usability with clear messages and menu navigation.
+
+- **Product**:
+  - **Purpose**: Represents individual product data and logic.
+  - **Responsibilities**:
+    - Store product properties like name, price, and stock.
+    - Validate values (e.g., non-negative stock or price).
+
+- **Inventory**
+  - **Purpose**: Manages the collection of products.
+  - **Responsibilities**:
+    - Add new products.
+    - Find, update, or remove products by name or ID.
+    - Adjust stock levels based on user actions.
+    - List all products with current stock and pricing.
+    - Prevent duplicate products or invalid operations.
 
 ### Modules
 
@@ -83,6 +109,8 @@ Develop an inventory management system where the user can manage products throug
 
 #### This will include a class diagram outlining the relationships between Program, UserInterface, Product, and Inventory modules
 
+- Created using Microsoft Word SmartArt / draw.io / etc.
+
 ### Transition to pseudocode
 
 WIP
@@ -93,7 +121,7 @@ WIP
 
 ### Tasks
 
-WIP
+A detailed checklist of development tasks per module will be included here.
 
 ### Code Components
 
