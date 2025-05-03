@@ -33,3 +33,4 @@ packages/
 # Temporary files
 *.tmp
 *.temp
+.fake
