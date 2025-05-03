@@ -1,21 +1,35 @@
-# Inventory Management System
+# Comprehensive Code Project Development
 
-## Project Overview
+## 1. Design Challenge Review
 
-This project is part of the Microsoft Back-end Developer Certification in Coursera.
+  This project is part of the Microsoft Back-end Developer Certification in Coursera.
 
-## Main Goal
+  Chosen Design Challenge: **Inventory Management System**.
 
-Develop an inventory management system to help users manage products. They should be able to add new products, update stock, and remove products.
+  Key requirements overview:
 
-## Core Functional Requirements
+- Create a console application.
+
+- The users should be able to:
+
+  - Add new products (name, price, stock).
+
+  - Update stock (sold/restocked).
+
+  - View all products and their stock.
+
+  - Remove products from inventory.
+
+## 2. Project Requirements and Objectives
+
+### Functional Requirements
 
 - Add new products with name, price, and stock quantity.
 - Update stock when products are sold or restocked.
 - View all products and their stock levels.
 - Remove products from inventory.
 
-## Non-Functional Requirements
+### Non-Functional Requirements
 
 - Performance:
   - Operations like adding, updating, or deleting products should complete instantly.
@@ -27,23 +41,66 @@ Develop an inventory management system to help users manage products. They shoul
 - Usability:
   - The app should have clear prompts and a menu system.
   - The app should have easy navigation with number-based menu choices.
-  - The app should have helpful error messages and confimations.
+  - The app should have helpful error messages and confirmations.
 
-## Objectives
+### Main Objectives
 
 - Build a working console app that meets all functional and non-functional requirements.
 - Demonstrate understanding of control structures, methods, and data structures.
 
-## Top-Down Approach
+## 3. Design Outline
 
-- High-Level Objective: Develop an inventory management system where the user can manage products through the console.
+### Overall Goal
 
-- Core System Actions:
-  - Products management: Manage different type of products.
-  - Stock management: Manage the stock of the different products.
-  - Inventory management: Manage the store inventory.
+Develop an inventory management system where the user can manage products through the console.
 
-- Components:
-  - Program: This will be the
-  - Products
-  - Inventory
+### Major functions
+
+- Products Management: Creating, updating, and removing product data.
+- Stock Operations: Handling inventory quantity changes like sells, restock, etc.
+- System Navigation: User interface and input flow.
+
+### Major functions break-down
+  
+- Program: This module will initialize the application, display the User Interface, and coordinate the different modules.
+- UserInterface
+- Products
+- Inventory
+
+### Modules
+
+#### Each core function will be developed as an independent module
+
+- UserInterface
+- Inventory
+- Product
+
+#### The main core functions will be tied together by the main class
+
+- Program
+
+### Flow Chart / Diagram
+
+#### This will include a class diagram outlining the relationships between Program, UserInterface, Product, and Inventory modules
+
+### Transition to pseudocode
+
+WIP
+
+### Pseudocode
+
+WIP
+
+### Tasks
+
+WIP
+
+### Code Components
+
+WIP
+
+## 4. Technology Stack
+
+- Language: C#
+- Platform: .NET Console App
+- IDE: Visual Studio Code
