@@ -1,0 +1,6 @@
+@startuml InventoryManagementFlowChart
+!include https://raw.githubusercontent.com/future-architect/puml-themes/master/themes/puml-theme-toy.puml
+start
+
+:show main menu; 
+@enduml
