@@ -109,7 +109,9 @@ Develop an inventory management system where the user can manage products throug
 
 #### This will include a class diagram outlining the relationships between Program, UserInterface, Product, and Inventory modules
 
-- Created using Microsoft Word SmartArt / draw.io / etc.
+![alt text](<public/Inventory System Flowchart.jpg>)
+
+- Created using Miro.
 
 ### Transition to pseudocode
 
