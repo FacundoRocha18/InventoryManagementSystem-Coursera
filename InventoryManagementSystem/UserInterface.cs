@@ -52,51 +52,76 @@ public class UserInterface
 			Prompt("Please enter the product name: ");
 			name = Console.ReadLine() ?? string.Empty;
 
-			int digitCount = name.Count(char.IsDigit);
-			if (string.IsNullOrWhiteSpace(name))
+			if (!Validation.IsValidProductName(name, out string nameError))
 			{
-				DisplayError("Product name cannot be empty. Please try again.");
+				DisplayError(nameError);
+				continue;
 			}
-			else if (digitCount > 3)
-			{
-				DisplayError("Product name contains too many numbers. Please try again.");
-			}
-			else if (name.Length < 3 || name.Length > 50)
-			{
-				DisplayError("Product name must be between 3 and 50 characters. Please try again.");
-			}
-			else if (!name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
-			{
-				DisplayError("Product name contains invalid characters. Please try again.");
-			}
-			else if (Inventory.GetProducts().Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)))
-			{
-				DisplayError("A product with this name already exists. Please try again.");
-			}
-		} while (string.IsNullOrWhiteSpace(name) || name.Count(char.IsDigit) > 3 || name.Length < 3 || name.Length > 50 || !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)) || Inventory.GetProducts().Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)));
 
+			if (!Validation.IsUniqueProductName(name, Inventory.GetProducts(), out string uniqueError))
+			{
+				DisplayError(uniqueError);
+				continue;
+			}
+
+			break;
+		} while (true);
+
+		string? priceInput;
 		double price;
+
 		while (true)
 		{
 			Prompt("Please enter the Product Price: ");
-			if (double.TryParse(Console.ReadLine(), out price) && price >= 0 && price <= 1000000)
+
+			priceInput = Console.ReadLine();
+
+			if (!Validation.IsValidPrice(priceInput, out string? error))
 			{
-				break;
+				DisplayError(error ?? "Unknown error occurred.");
+				continue;
 			}
-			DisplayError("Invalid price. Please enter a non-negative number not exceeding $1,000,000.");
+
+			break;
 		}
 
+		price = double.Parse(priceInput ?? throw new InvalidOperationException("Price input cannot be null."));
+
+		string? stockInput;
 		int stock;
+
 		while (true)
 		{
 			Prompt("Please enter the Product Stock: ");
-			if (int.TryParse(Console.ReadLine(), out stock) && stock >= 0 && stock <= 10000)
+
+			stockInput = Console.ReadLine();
+
+			if (!Validation.IsValidStock(stockInput, out string? error))
 			{
-				break;
+				DisplayError(error ?? "Unknown error occurred.");
+				continue;
 			}
-			DisplayError("Invalid stock. Please enter a non-negative integer not exceeding 10,000.");
+
+			break;
 		}
 
+		stock = int.Parse(stockInput ?? throw new InvalidOperationException("Stock input cannot be null."));
+
 		return new Product(name, price, stock);
+	}
+
+	public static void DisplayProducts(List<Product> products)
+	{
+		Console.WriteLine("Products in inventory:");
+		Console.WriteLine(new string('-', 40));
+		Console.WriteLine($"{"Name",-20} {"Price",-10} {"Stock",-10}");
+		Console.WriteLine(new string('-', 40));
+
+		foreach (Product product in products)
+		{
+			Console.WriteLine($"{product.name,-20} {product.price,-10:C} {product.stock,-10}");
+			Console.WriteLine(new string('-', 40));
+		}
+
 	}
 }

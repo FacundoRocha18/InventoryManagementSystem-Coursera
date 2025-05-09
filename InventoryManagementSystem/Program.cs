@@ -42,6 +42,18 @@
 					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.name}");
 
 					break;
+				case 4:
+					List<Product> products = Inventory.GetProducts();
+
+					if (products.Count == 0)
+					{
+						Console.WriteLine("No products available.");
+						return;
+					}
+
+					UserInterface.DisplayProducts(products);
+
+					break;
 			}
 		}
 	}
