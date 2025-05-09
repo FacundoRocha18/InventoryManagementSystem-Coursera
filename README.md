@@ -107,19 +107,157 @@ Develop an inventory management system where the user can manage products throug
 
 ### Flow Chart / Diagram
 
-#### This will include a class diagram outlining the relationships between Program, UserInterface, Product, and Inventory modules
-
 ![alt text](<public/Inventory System Flowchart.jpg>)
 
 - Created using Miro.
 
 ### Transition to pseudocode
 
-WIP
+| Flowchart Block                              | Pseudocode Step                          |
+|---------------------------------------------|------------------------------------------|
+| Start                                        | Start                                    |
+| Display Main Menu                           | Display Main Menu                        |
+| Prompt the User to select an option         | Prompt user for menu option              |
+| Validate Menu Selection                     | Validate selected menu option            |
+| Is Menu Selection Valid?                    | If menu option is valid                  |
+| Display error message                       | Show "Invalid option" error              |
+| Select Menu Option                          | Read selected menu option                |
+| User selects "Add Product"                  | If user selects "Add Product"            |
+| Prompt for Product Name, Price, Stock       | Prompt user for product details          |
+| Validate Product Data                       | Validate product name, price, and stock  |
+| Is Product Data Valid?                      | If product data is valid                 |
+| Add Product to Inventory                    | Add product to inventory                 |
+| Validate Operation Success                  | Validate product was added successfully  |
+| Was Operation Successful?                   | If add was successful                    |
+| Display success message                     | Show success message                     |
+| User selects "Remove Product"               | If user selects "Remove Product"         |
+| Prompt for Product Name                     | Prompt user for product name             |
+| Validate Product Name                       | Validate that product name is valid      |
+| Is Product Name Valid?                      | If product name is valid                 |
+| Remove Product from Inventory               | Remove product from inventory            |
+| Validate Operation Success                  | Validate product was removed successfully|
+| Was Operation Successful?                   | If removal was successful                |
+| Display success message                     | Show success message                     |
+| User selects "Update Stock"                 | If user selects "Update Stock"           |
+| Prompt for Product Name & new Stock         | Prompt user for product name and stock   |
+| Validate Product Name & new Stock           | Validate product name and new stock      |
+| Are Product Name & new Stock valid?         | If both are valid                        |
+| Update Product Stock in Inventory           | Update product stock in inventory        |
+| Validate Operation Success                  | Validate stock update success            |
+| Was Operation Successful?                   | If update was successful                 |
+| Display success message                     | Show success message                     |
+| User selects "View Products"                | If user selects "View Products"          |
+| Validate Inventory Not Empty                | Check if inventory is empty              |
+| Is Inventory Empty?                         | If inventory is empty                    |
+| Display Empty Inventory Message             | Show "No products" message               |
+| Display All Products in Inventory           | Show full list of products               |
+| User selects "Exit App"                     | If user selects "Exit App"               |
+| Display Exit Message                        | Show exit message                        |
+| Exit the Application                        | Exit program                             |
+| End                                          | End                                      |
 
 ### Pseudocode
 
-WIP
+```plaintext
+
+START
+
+WHILE condition is true:
+
+  DISPLAY "Inventory Management System"
+  DISPLAY "1. Add Product"
+  DISPLAY "2. Remove Product"
+  DISPLAY "3. Update Stock"
+  DISPLAY "4. View Products"
+  DISPLAY "0. Exit"
+
+  PROMPT "Select an option (1-5)"
+  READ userInput
+
+  IF the option is not valid:
+    DISPLAY "Error: The selected option is invalid. Choose another one."
+  END IF
+
+  Switch(Menu Selection)
+        Case 1:
+            PROMPT "Please enter the Product Name:"
+            READ productName
+            PROMPT "Please enter the Product Price:
+            READ productPrice
+            PROMPT "Please enter the Product Stock:"
+            READ productStock
+
+            IF productName is not valid:
+              DISPLAY "Error: The product name is not valid."
+            END IF
+
+            IF productPrice is not valid:
+              DISPLAY "Error: The product price is not valid."
+            END IF
+
+            IF productStock is not valid:
+              DISPLAY "Error: The product stock is not valid."
+            END IF
+
+            Add Product to Inventory
+
+            IF product is not in inventory list:
+              DISPLAY "Error: An error occurred with the operation."              
+            END IF
+            
+            DISPLAY "Success: Operation successful."
+            Break
+
+        Case 2:
+            Prompt the User for Product Name
+            Validate Product Name
+            If Product Name is Valid:
+                Remove Product from Inventory
+                Validate Operation Success
+                If Operation was Successful:
+                    DISPLAY success message
+                Else:
+                    DISPLAY error message
+            Else:
+                DISPLAY error message
+            Break
+
+        Case 3:
+            Prompt the User for Product Name & new Stock
+            Validate Product Name & new Stock
+            If Product Name & new Stock are Valid:
+                Update Product Stock in Inventory
+                Validate Operation Success
+                If Operation was Successful:
+                    DISPLAY success message
+                Else:
+                    DISPLAY error message
+            Else:
+                DISPLAY error message
+            Break
+
+        Case 4:
+            Validate Inventory Not Empty
+            If Inventory is Empty:
+                DISPLAY Empty Inventory Message
+            Else:
+                DISPLAY All Products in Inventory
+            Break
+
+        Case 0:
+            DISPLAY Exit message
+            Exit the application
+            Break
+
+        Default:
+            DISPLAY "Error: Invalid option. Plase enter a valid option..."
+            Break
+
+END WHILE
+
+END
+
+```
 
 ### Tasks
 
