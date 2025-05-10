@@ -57,7 +57,7 @@ public class UserInterface
 	{
 		string name;
 
-		do
+		while (true)
 		{
 			Prompt("Please enter the product name: ");
 			name = Console.ReadLine() ?? string.Empty;
@@ -75,7 +75,7 @@ public class UserInterface
 			}
 
 			break;
-		} while (true);
+		}
 
 		return name;
 	}
