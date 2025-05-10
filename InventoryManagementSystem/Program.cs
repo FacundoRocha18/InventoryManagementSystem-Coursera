@@ -8,7 +8,7 @@
 		{
 			UserInterface.DisplayMainMenu();
 
-			option = UserInterface.PromptUser("Select an option (1-5): ");
+			option = UserInterface.PromptForMenuOption();
 
 			switch (option)
 			{
@@ -54,6 +54,9 @@
 					UserInterface.DisplayProducts(products);
 
 					break;
+				case 0:
+					UserInterface.DisplaySuccess("Bye!");
+					return;
 			}
 		}
 	}

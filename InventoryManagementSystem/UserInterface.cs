@@ -44,6 +44,28 @@ public class UserInterface
 		Console.WriteLine($"Success: {message}");
 	}
 
+	public static int PromptForMenuOption()
+	{
+		string? input;
+
+		while (true)
+		{
+			Prompt("Please select an option: ");
+
+			input = Console.ReadLine();
+
+			if (!Validation.IsValidMenuOption(input, out string? error))
+			{
+				DisplayError(error ?? "Unknown error occurred.");
+				continue;
+			}
+
+			break;
+		}
+
+		return int.Parse(input ?? throw new InvalidOperationException("Price input cannot be null."));
+	}
+
 	public static Product PromptForProductDetails()
 	{
 		string name = PromptForProductName();

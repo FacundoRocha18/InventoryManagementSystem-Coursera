@@ -2,6 +2,45 @@ using System.Reflection.PortableExecutable;
 
 public static class Validation
 {
+	public static bool IsValidMenuOption(string? input, out string? errorMessage)
+	{
+		errorMessage = null;
+
+		errorMessage = null;
+
+		if (string.IsNullOrWhiteSpace(input))
+		{
+			errorMessage = "Option cannot be empty.";
+			return false;
+		}
+
+		if (input.Any(c => !char.IsDigit(c)))
+		{
+			errorMessage = "Option must contain only digits (0-4).";
+			return false;
+		}
+
+		// Checks if the options contains any invalid character like letters
+		if (input.Any(char.IsLetter))
+		{
+			UserInterface.DisplayError("Option cannot contain letters or invalid characters.");
+			return false;
+		}
+
+		if (!double.TryParse(input, out double option))
+		{
+			errorMessage = "Option must be a valid number.";
+			return false;
+		}
+
+		if (option < 0 || option > 4)
+		{
+			UserInterface.DisplayError("Price must be a non-negative number (0-4).");
+			return false;
+		}
+
+		return true;
+	}
 	public static bool IsValidProductName(string name, out string errorMessage)
 	{
 		errorMessage = string.Empty;
