@@ -81,42 +81,50 @@ public static class Validation
 		return true;
 	}
 
-	public static bool IsValidPrice(string? input, out string? errorMessage)
+	public static ValidationResult IsValidPrice(string? input)
 	{
-		errorMessage = null;
-
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			errorMessage = "Price cannot be empty.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price cannot be empty."
+			};
 		}
 
 		if (input.Any(c => !char.IsDigit(c)))
 		{
-			errorMessage = "Price must contain only digits (0-9).";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price must contain only digits (0-9)."
+			};
 		}
 
 		// Checks if the price contains any invalid character like letters
 		if (input.Any(char.IsLetter))
 		{
-			errorMessage = "Price cannot contain letters or invalid characters.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price cannot contain letters or invalid characters."
+			};
 		}
 
 		if (!double.TryParse(input, out double price))
 		{
-			errorMessage = "Price must be a valid number.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price must be a valid number."
+			};
 		}
 
 		if (price < 0 || price > MaxPrice)
 		{
-			errorMessage = "Price must be a non-negative number not exceeding $1,000,000.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price must be a non-negative number not exceeding $1,000,000."
+			};
 		}
 
-		return true;
+		return new ValidationResult { IsValid = true };
 	}
 
 	public static ValidationResult IsValidStock(string? input)

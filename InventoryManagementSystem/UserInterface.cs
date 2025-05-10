@@ -114,9 +114,11 @@ public class UserInterface
 
 			input = Console.ReadLine();
 
-			if (!Validation.IsValidPrice(input, out string? error))
+			ValidationResult result = Validation.IsValidPrice(input);
+
+			if (!result.IsValid)
 			{
-				DisplayError(error);
+				DisplayError(result.ErrorMessage);
 				continue;
 			}
 
@@ -130,15 +132,16 @@ public class UserInterface
 
 	private static int PromptForProductStock()
 	{
-		string? stockInput;
+		string? input;
+		int stock;
 
 		while (true)
 		{
 			Prompt("Please enter the Product Stock: ");
 
-			stockInput = Console.ReadLine();
+			input = Console.ReadLine();
 
-			ValidationResult result = Validation.IsValidStock(stockInput);
+			ValidationResult result = Validation.IsValidStock(input);
 
 			if (!result.IsValid)
 			{
@@ -149,7 +152,9 @@ public class UserInterface
 			break;
 		}
 
-		return int.Parse(stockInput ?? throw new InvalidOperationException("Stock input cannot be null."));
+		stock = int.Parse(input ?? throw new InvalidOperationException("Stock input cannot be null."));
+
+		return stock;
 	}
 
 	public static void DisplayProducts(List<Product> products)
