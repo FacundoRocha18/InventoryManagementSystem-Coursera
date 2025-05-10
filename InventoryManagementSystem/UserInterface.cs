@@ -134,9 +134,11 @@ public class UserInterface
 
 			stockInput = Console.ReadLine();
 
-			if (!Validation.IsValidStock(stockInput, out string? error))
+			ValidationResult result = Validation.IsValidStock(stockInput);
+
+			if (!result.IsValid)
 			{
-				DisplayError(error ?? "Unknown error occurred.");
+				DisplayError(result.ErrorMessage ?? "Unknown error occurred.");
 				continue;
 			}
 

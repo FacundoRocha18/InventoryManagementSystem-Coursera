@@ -1,11 +1,15 @@
-using System.Reflection.PortableExecutable;
 
 public static class Validation
 {
+	private const int MaxStock = 10000;
+	private const double MaxPrice = 1_000_000;
+	private const int MaxMenuOption = 4;
+	private const int MinNameChars = 3;
+	private const int MaxNameChars = 75;
+	private const int MaxNameDigits = 3;
+
 	public static bool IsValidMenuOption(string? input, out string? errorMessage)
 	{
-		errorMessage = null;
-
 		errorMessage = null;
 
 		if (string.IsNullOrWhiteSpace(input))
@@ -14,16 +18,10 @@ public static class Validation
 			return false;
 		}
 
-		if (input.Any(c => !char.IsDigit(c)))
-		{
-			errorMessage = "Option must contain only digits (0-4).";
-			return false;
-		}
-
 		// Checks if the options contains any invalid character like letters
-		if (input.Any(char.IsLetter))
+		if (!input.All(char.IsDigit))
 		{
-			UserInterface.DisplayError("Option cannot contain letters or invalid characters.");
+			errorMessage = $"Option must contain only digits (0-{MaxMenuOption}).";
 			return false;
 		}
 
@@ -33,17 +31,17 @@ public static class Validation
 			return false;
 		}
 
-		if (option < 0 || option > 4)
+		if (option < 0 || option > MaxMenuOption)
 		{
-			UserInterface.DisplayError("Price must be a non-negative number (0-4).");
+			errorMessage = "Price must be a non-negative number (0-4).";
 			return false;
 		}
 
 		return true;
 	}
-	public static bool IsValidProductName(string name, out string errorMessage)
+	public static bool IsValidProductName(string name, out string? errorMessage)
 	{
-		errorMessage = string.Empty;
+		errorMessage = null;
 		int digitCount = name.Count(char.IsDigit);
 
 		if (string.IsNullOrWhiteSpace(name))
@@ -51,12 +49,12 @@ public static class Validation
 			errorMessage = "Product name cannot be empty.";
 			return false;
 		}
-		if (digitCount > 3)
+		if (digitCount > MaxNameDigits)
 		{
 			errorMessage = "Product name contains too many numbers.";
 			return false;
 		}
-		if (name.Length < 3 || name.Length > 50)
+		if (name.Length < MinNameChars || name.Length > MaxNameChars)
 		{
 			errorMessage = "Product name must be between 3 and 50 characters.";
 			return false;
@@ -70,9 +68,9 @@ public static class Validation
 		return true;
 	}
 
-	public static bool IsUniqueProductName(string name, List<Product> products, out string errorMessage)
+	public static bool IsUniqueProductName(string name, List<Product> products, out string? errorMessage)
 	{
-		errorMessage = string.Empty;
+		errorMessage = null;
 
 		if (products.Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)))
 		{
@@ -102,7 +100,7 @@ public static class Validation
 		// Checks if the price contains any invalid character like letters
 		if (input.Any(char.IsLetter))
 		{
-			UserInterface.DisplayError("Price cannot contain letters or invalid characters.");
+			errorMessage = "Price cannot contain letters or invalid characters.";
 			return false;
 		}
 
@@ -112,47 +110,57 @@ public static class Validation
 			return false;
 		}
 
-		if (price < 0 || price > 1000000)
+		if (price < 0 || price > MaxPrice)
 		{
-			UserInterface.DisplayError("Price must be a non-negative number not exceeding $1,000,000.");
+			errorMessage = "Price must be a non-negative number not exceeding $1,000,000.";
 			return false;
 		}
 
 		return true;
 	}
 
-	public static bool IsValidStock(string? input, out string? errorMessage)
+	public static ValidationResult IsValidStock(string? input)
 	{
-		errorMessage = null;
-
 		// Checks if the input is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			errorMessage = "Stock cannot be empty.";
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "Stock cannot be empty."
+			};
 		}
 
 		// Checks if the stock contains any invalid character like letters
 		if (input.Any(c => !char.IsDigit(c)))
 		{
-			errorMessage = "Stock must contain only digits (0-9).";
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "Stock must contain only digits."
+			};
 		}
 
 		// Tries to parse the string input into an integer
 		if (!int.TryParse(input, out int stock))
 		{
-			errorMessage = "Stock must be a valid number.";
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "Stock must be a valid number."
+			};
 		}
 
-		// Checks if the value is between the allowed range
-		if (stock < 0 || stock > 10000)
+		// Checks if the value is between the allowed stock range
+		if (stock < 0 || stock > MaxStock)
 		{
-			errorMessage = "Stock must be a non-negative integer not exceeding 10,000.";
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "Stock must be a non-negative integer not exceeding 10,000."
+			};
 		}
 
-		return true;
+		return new ValidationResult { IsValid = true };
 	}
 }
