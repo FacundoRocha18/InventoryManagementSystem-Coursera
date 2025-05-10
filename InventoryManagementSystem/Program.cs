@@ -42,6 +42,12 @@
 					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.name}");
 
 					break;
+				case 2:
+					UserInterface.DisplayError("Method not implemented.");
+					break;
+				case 3:
+					UserInterface.DisplayError("Method not implemented.");
+					break;
 				case 4:
 					List<Product> products = Inventory.GetProducts();
 
