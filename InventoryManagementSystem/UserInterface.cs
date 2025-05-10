@@ -78,6 +78,7 @@ public class UserInterface
 	private static string PromptForProductName()
 	{
 		string? input;
+		string name;
 
 		while (true)
 		{
@@ -85,22 +86,20 @@ public class UserInterface
 
 			input = Console.ReadLine();
 
-			if (!Validation.IsValidProductName(input, out string? nameError))
-			{
-				DisplayError(nameError);
-				continue;
-			}
+			ValidationResult result = Validation.IsValidProductName(input);
 
-			if (!Validation.IsUniqueProductName(input, Inventory.GetProducts(), out string? uniqueError))
+			if (!result.IsValid)
 			{
-				DisplayError(uniqueError);
+				DisplayError(result.ErrorMessage);
 				continue;
 			}
 
 			break;
 		}
 
-		return input;
+		name = input ?? throw new InvalidOperationException("Name input cannot be null.");
+
+		return name;
 	}
 
 	private static double PromptForProductPrice()

@@ -39,53 +39,60 @@ public static class Validation
 
 		return true;
 	}
-	public static bool IsValidProductName(string name, out string? errorMessage)
+	public static ValidationResult IsValidProductName(string? input)
 	{
-		errorMessage = null;
-		int digitCount = name.Count(char.IsDigit);
-
-		if (string.IsNullOrWhiteSpace(name))
+		if (string.IsNullOrWhiteSpace(input))
 		{
-			errorMessage = "Product name cannot be empty.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Name cannot be empty."
+			};
 		}
+
+		int digitCount = input.Count(char.IsDigit);
+
 		if (digitCount > MaxNameDigits)
 		{
-			errorMessage = "Product name contains too many numbers.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Product name contains too many numbers."
+			};
 		}
-		if (name.Length < MinNameChars || name.Length > MaxNameChars)
+
+		if (input.Length < MinNameChars || input.Length > MaxNameChars)
 		{
-			errorMessage = "Product name must be between 3 and 50 characters.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Product name must be between 3 and 50 characters."
+			};
 		}
-		if (!name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
+		
+		if (!input.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
 		{
-			errorMessage = "Product name contains invalid characters.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Product name contains invalid characters."
+			};
 		}
 
-		return true;
-	}
-
-	public static bool IsUniqueProductName(string name, List<Product> products, out string? errorMessage)
-	{
-		errorMessage = null;
-
-		if (products.Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+		if (Inventory.GetProducts().Any(product => product.name.Equals(input, StringComparison.OrdinalIgnoreCase)))
 		{
-			errorMessage = "A product with this name already exists.";
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "A product with this name already exists."
+			};
 		}
 
-		return true;
+		return new ValidationResult { IsValid = true };
 	}
 
 	public static ValidationResult IsValidPrice(string? input)
 	{
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price cannot be empty."
 			};
@@ -93,7 +100,8 @@ public static class Validation
 
 		if (input.Any(c => !char.IsDigit(c)))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price must contain only digits (0-9)."
 			};
@@ -102,7 +110,8 @@ public static class Validation
 		// Checks if the price contains any invalid character like letters
 		if (input.Any(char.IsLetter))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price cannot contain letters or invalid characters."
 			};
@@ -110,7 +119,8 @@ public static class Validation
 
 		if (!double.TryParse(input, out double price))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price must be a valid number."
 			};
@@ -118,7 +128,8 @@ public static class Validation
 
 		if (price < 0 || price > MaxPrice)
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price must be a non-negative number not exceeding $1,000,000."
 			};
