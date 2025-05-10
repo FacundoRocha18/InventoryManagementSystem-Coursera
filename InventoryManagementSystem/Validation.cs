@@ -10,6 +10,7 @@ public static class Validation
 
 	public static ValidationResult IsValidMenuOption(string? input)
 	{
+		// Checks if the option is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
 			return new ValidationResult {
@@ -18,7 +19,7 @@ public static class Validation
 			};
 		}
 
-		// Checks if the options contains any invalid character like letters
+		// Checks if the option contains any invalid character
 		if (!input.All(char.IsDigit))
 		{
 			return new ValidationResult {
@@ -27,6 +28,7 @@ public static class Validation
 			};
 		}
 
+		// Tries to parse the option string into a double
 		if (!double.TryParse(input, out double option))
 		{
 			return new ValidationResult {
@@ -35,6 +37,7 @@ public static class Validation
 			};
 		}
 
+		// Checks if the option is between the allowed range
 		if (option < 0 || option > MaxMenuOption)
 		{
 			return new ValidationResult {
