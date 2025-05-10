@@ -11,27 +11,19 @@ public class UserInterface
 		Console.WriteLine("0. Exit");
 	}
 
-	public static int PromptUser(string message)
+	public static void DisplayProducts(List<Product> products)
 	{
-		int choice;
+		Console.WriteLine("Products in inventory:");
+		Console.WriteLine(new string('-', 40));
+		Console.WriteLine($"{"Name",-20} {"Price",-10} {"Stock",-10}");
+		Console.WriteLine(new string('-', 40));
 
-		Console.Write(message);
-
-		string? input = Console.ReadLine();
-
-		if (string.IsNullOrEmpty(input))
+		foreach (Product product in products)
 		{
-			throw new ArgumentException("Input cannot be null or empty.");
+			Console.WriteLine($"{product.name,-20} {product.price,-10:C} {product.stock,-10}");
+			Console.WriteLine(new string('-', 40));
 		}
 
-		choice = int.Parse(input);
-
-		return choice;
-	}
-
-	public static void Prompt(string message)
-	{
-		Console.Write(message);
 	}
 
 	public static void DisplayError(string? error)
@@ -73,6 +65,11 @@ public class UserInterface
 		int stock = PromptForProductStock();
 
 		return new Product(name, price, stock);
+	}
+
+	private static void Prompt(string message)
+	{
+		Console.Write(message);
 	}
 
 	private static string PromptForProductName()
@@ -154,20 +151,5 @@ public class UserInterface
 		stock = int.Parse(input ?? throw new InvalidOperationException("Stock input cannot be null."));
 
 		return stock;
-	}
-
-	public static void DisplayProducts(List<Product> products)
-	{
-		Console.WriteLine("Products in inventory:");
-		Console.WriteLine(new string('-', 40));
-		Console.WriteLine($"{"Name",-20} {"Price",-10} {"Stock",-10}");
-		Console.WriteLine(new string('-', 40));
-
-		foreach (Product product in products)
-		{
-			Console.WriteLine($"{product.name,-20} {product.price,-10:C} {product.stock,-10}");
-			Console.WriteLine(new string('-', 40));
-		}
-
 	}
 }
