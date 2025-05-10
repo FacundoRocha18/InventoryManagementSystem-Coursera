@@ -46,7 +46,17 @@ public class UserInterface
 
 	public static Product PromptForProductDetails()
 	{
+		string name = PromptForProductName();
+		double price = PromptForProductPrice();
+		int stock = PromptForProductStock();
+
+		return new Product(name, price, stock);
+	}
+
+	private static string PromptForProductName()
+	{
 		string name;
+
 		do
 		{
 			Prompt("Please enter the product name: ");
@@ -67,8 +77,12 @@ public class UserInterface
 			break;
 		} while (true);
 
+		return name;
+	}
+
+	private static double PromptForProductPrice()
+	{
 		string? priceInput;
-		double price;
 
 		while (true)
 		{
@@ -85,10 +99,12 @@ public class UserInterface
 			break;
 		}
 
-		price = double.Parse(priceInput ?? throw new InvalidOperationException("Price input cannot be null."));
+		return double.Parse(priceInput ?? throw new InvalidOperationException("Price input cannot be null."));
+	}
 
+	private static int PromptForProductStock()
+	{
 		string? stockInput;
-		int stock;
 
 		while (true)
 		{
@@ -105,9 +121,7 @@ public class UserInterface
 			break;
 		}
 
-		stock = int.Parse(stockInput ?? throw new InvalidOperationException("Stock input cannot be null."));
-
-		return new Product(name, price, stock);
+		return int.Parse(stockInput ?? throw new InvalidOperationException("Stock input cannot be null."));
 	}
 
 	public static void DisplayProducts(List<Product> products)
