@@ -34,9 +34,9 @@ public class UserInterface
 		Console.Write(message);
 	}
 
-	public static void DisplayError(string error)
+	public static void DisplayError(string? error)
 	{
-		Console.WriteLine($"Error: {error}");
+		Console.WriteLine($"Error: {error}" ?? "Unknown error occurred.");
 	}
 
 	public static void DisplaySuccess(string message)
@@ -77,20 +77,21 @@ public class UserInterface
 
 	private static string PromptForProductName()
 	{
-		string name;
+		string? input;
 
 		while (true)
 		{
 			Prompt("Please enter the product name: ");
-			name = Console.ReadLine() ?? string.Empty;
 
-			if (!Validation.IsValidProductName(name, out string nameError))
+			input = Console.ReadLine();
+
+			if (!Validation.IsValidProductName(input, out string? nameError))
 			{
 				DisplayError(nameError);
 				continue;
 			}
 
-			if (!Validation.IsUniqueProductName(name, Inventory.GetProducts(), out string uniqueError))
+			if (!Validation.IsUniqueProductName(input, Inventory.GetProducts(), out string? uniqueError))
 			{
 				DisplayError(uniqueError);
 				continue;
@@ -99,29 +100,32 @@ public class UserInterface
 			break;
 		}
 
-		return name;
+		return input;
 	}
 
 	private static double PromptForProductPrice()
 	{
-		string? priceInput;
+		string? input;
+		double price;
 
 		while (true)
 		{
 			Prompt("Please enter the Product Price: ");
 
-			priceInput = Console.ReadLine();
+			input = Console.ReadLine();
 
-			if (!Validation.IsValidPrice(priceInput, out string? error))
+			if (!Validation.IsValidPrice(input, out string? error))
 			{
-				DisplayError(error ?? "Unknown error occurred.");
+				DisplayError(error);
 				continue;
 			}
 
 			break;
 		}
 
-		return double.Parse(priceInput ?? throw new InvalidOperationException("Price input cannot be null."));
+		price = double.Parse(input ?? throw new InvalidOperationException("Price input cannot be null."));
+
+		return price;
 	}
 
 	private static int PromptForProductStock()
@@ -138,7 +142,7 @@ public class UserInterface
 
 			if (!result.IsValid)
 			{
-				DisplayError(result.ErrorMessage ?? "Unknown error occurred.");
+				DisplayError(result.ErrorMessage);
 				continue;
 			}
 
