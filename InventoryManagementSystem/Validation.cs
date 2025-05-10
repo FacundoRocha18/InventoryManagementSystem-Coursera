@@ -50,6 +50,7 @@ public static class Validation
 	}
 	public static ValidationResult IsValidProductName(string? input)
 	{
+		// Checks if the input is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
 			return new ValidationResult {
@@ -58,32 +59,37 @@ public static class Validation
 			};
 		}
 
+		// Gets the digit count in the input 
 		int digitCount = input.Count(char.IsDigit);
 
+		// Checks if the input digit count is under the max allowed sequential digits
 		if (digitCount > MaxNameDigits)
 		{
 			return new ValidationResult {
 				IsValid = false,
-				ErrorMessage = "Product name contains too many numbers."
+				ErrorMessage = "Name contains too many numbers."
 			};
 		}
 
+		// Checks if the input lenght is between the allowed range
 		if (input.Length < MinNameChars || input.Length > MaxNameChars)
 		{
 			return new ValidationResult {
 				IsValid = false,
-				ErrorMessage = "Product name must be between 3 and 50 characters."
+				ErrorMessage = "Name must be between 3 and 50 characters."
 			};
 		}
 		
+		// Checks if the input contains any character other than letter, digits or white spaces
 		if (!input.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
 		{
 			return new ValidationResult {
 				IsValid = false,
-				ErrorMessage = "Product name contains invalid characters."
+				ErrorMessage = "Name contains invalid characters."
 			};
 		}
 
+		// Checks if the name already exists in the list of products
 		if (Inventory.GetProducts().Any(product => product.name.Equals(input, StringComparison.OrdinalIgnoreCase)))
 		{
 			return new ValidationResult
@@ -98,6 +104,7 @@ public static class Validation
 
 	public static ValidationResult IsValidPrice(string? input)
 	{
+		// Checks if the input is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
 			return new ValidationResult
@@ -107,34 +114,27 @@ public static class Validation
 			};
 		}
 
+		// Checks if the input contains any invalid character like letters
 		if (input.Any(c => !char.IsDigit(c)))
 		{
 			return new ValidationResult
 			{
 				IsValid = false,
-				ErrorMessage = "Price must contain only digits (0-9)."
+				ErrorMessage = "Price cannot contain letters or special characters."
 			};
 		}
 
-		// Checks if the price contains any invalid character like letters
-		if (input.Any(char.IsLetter))
-		{
-			return new ValidationResult
-			{
-				IsValid = false,
-				ErrorMessage = "Price cannot contain letters or invalid characters."
-			};
-		}
-
+		// Tries to parse the input from string to double and assigns the value to the price variable
 		if (!double.TryParse(input, out double price))
 		{
 			return new ValidationResult
 			{
 				IsValid = false,
-				ErrorMessage = "Price must be a valid number."
+				ErrorMessage = "Price must be a non-negative valid number."
 			};
 		}
 
+		// Checks if the price is between the allowed range
 		if (price < 0 || price > MaxPrice)
 		{
 			return new ValidationResult
