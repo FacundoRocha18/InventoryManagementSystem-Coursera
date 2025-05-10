@@ -8,36 +8,42 @@ public static class Validation
 	private const int MaxNameChars = 75;
 	private const int MaxNameDigits = 3;
 
-	public static bool IsValidMenuOption(string? input, out string? errorMessage)
+	public static ValidationResult IsValidMenuOption(string? input)
 	{
-		errorMessage = null;
-
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			errorMessage = "Option cannot be empty.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Option cannot be empty."
+			};
 		}
 
 		// Checks if the options contains any invalid character like letters
 		if (!input.All(char.IsDigit))
 		{
-			errorMessage = $"Option must contain only digits (0-{MaxMenuOption}).";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = $"Option must contain only digits (0-{MaxMenuOption})."
+			};
 		}
 
 		if (!double.TryParse(input, out double option))
 		{
-			errorMessage = "Option must be a valid number.";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage =  "Option must be a valid number."
+			};
 		}
 
 		if (option < 0 || option > MaxMenuOption)
 		{
-			errorMessage = "Price must be a non-negative number (0-4).";
-			return false;
+			return new ValidationResult {
+				IsValid = false,
+				ErrorMessage = "Price must be a non-negative number (0-4)."
+			};
 		}
 
-		return true;
+		return new ValidationResult { IsValid = true };
 	}
 	public static ValidationResult IsValidProductName(string? input)
 	{

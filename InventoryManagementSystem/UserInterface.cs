@@ -46,9 +46,11 @@ public class UserInterface
 
 			input = Console.ReadLine();
 
-			if (!Validation.IsValidMenuOption(input, out string? error))
+			ValidationResult result = Validation.IsValidMenuOption(input);
+
+			if (!result.IsValid)
 			{
-				DisplayError(error ?? "Unknown error occurred.");
+				DisplayError(result.ErrorMessage);
 				continue;
 			}
 
