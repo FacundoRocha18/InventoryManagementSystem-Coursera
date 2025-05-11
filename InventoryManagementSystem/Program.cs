@@ -50,25 +50,21 @@ public static class InventoryManagementSystem
 
 	private static void HandleRemoveProduct()
 	{
-		Product productToRemove = UserInterface.PromptForProductToRemove();
+		Product? product = ProductService.GetProductToRemove();
 
-		if (productToRemove == null)
+		if (product == null)
 		{
 			UserInterface.DisplayError("Failed to collect product details.");
 			return;
 		}
 
-		Inventory.RemoveProduct(productToRemove);
-
-		Product? removedProduct = Inventory.GetProductByName(productToRemove.Name);
-
-		if (removedProduct != null)
+		if (!ProductService.TryRemove(product))
 		{
-			UserInterface.DisplayError($"Failed to remove product: {removedProduct.Name}");
+			UserInterface.DisplayError($"Failed to remove product: {product.Name}");
 			return;
 		}
 
-		UserInterface.DisplaySuccess($"Operation successful. Product removed: {productToRemove.Name}");
+		UserInterface.DisplaySuccess($"Product removed: {product.Name}");
 	}
 
 	private static void HandleUpdateStock()
