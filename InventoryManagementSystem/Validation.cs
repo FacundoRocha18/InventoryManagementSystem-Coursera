@@ -13,7 +13,8 @@ public static class Validation
 		// Checks if the option is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Option cannot be empty."
 			};
@@ -22,7 +23,8 @@ public static class Validation
 		// Checks if the option contains any invalid character
 		if (!input.All(char.IsDigit))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = $"Option must contain only digits (0-{MaxMenuOption})."
 			};
@@ -31,16 +33,18 @@ public static class Validation
 		// Tries to parse the option string into a double
 		if (!double.TryParse(input, out double option))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
-				ErrorMessage =  "Option must be a valid number."
+				ErrorMessage = "Option must be a valid number."
 			};
 		}
 
 		// Checks if the option is between the allowed range
 		if (option < 0 || option > MaxMenuOption)
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Price must be a non-negative number (0-4)."
 			};
@@ -53,7 +57,8 @@ public static class Validation
 		// Checks if the input is null or empty
 		if (string.IsNullOrWhiteSpace(input))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Name cannot be empty."
 			};
@@ -65,7 +70,8 @@ public static class Validation
 		// Checks if the input digit count is under the max allowed sequential digits
 		if (digitCount > MaxNameDigits)
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Name contains too many numbers."
 			};
@@ -74,23 +80,30 @@ public static class Validation
 		// Checks if the input lenght is between the allowed range
 		if (input.Length < MinNameChars || input.Length > MaxNameChars)
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Name must be between 3 and 50 characters."
 			};
 		}
-		
+
 		// Checks if the input contains any character other than letter, digits or white spaces
 		if (!input.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
 		{
-			return new ValidationResult {
+			return new ValidationResult
+			{
 				IsValid = false,
 				ErrorMessage = "Name contains invalid characters."
 			};
 		}
 
+		return new ValidationResult { IsValid = true };
+	}
+
+	public static ValidationResult IsUniqueProductName(string name)
+	{
 		// Checks if the name already exists in the list of products
-		if (Inventory.GetProducts().Any(product => product.name.Equals(input, StringComparison.OrdinalIgnoreCase)))
+		if (Inventory.GetProducts().Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)))
 		{
 			return new ValidationResult
 			{

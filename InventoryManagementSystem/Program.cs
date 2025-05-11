@@ -13,34 +13,31 @@
 			switch (option)
 			{
 				case 1:
-					// Prompts the user for the product details, and assigns the input values to the variable newProduct
+					// Prompts the user for the product details
 					Product newProduct = UserInterface.PromptForProductDetails();
 
-					// Validates that newProduct is an instance of the class Product
-					if (!typeof(Product).IsInstanceOfType(newProduct))
+					// Null-check in case PromptForProductDetails() returns null explicitly
+					if (newProduct == null)
 					{
 						// If newProduct is not an instance of Product, print an error and early return
-						UserInterface.DisplayError("An error occurred with the operation.");
-						return;
+						UserInterface.DisplayError("Failed to collect product details.");
+						break;
 					}
 
-					// Add the new product to the Inventory products list
+					// Try to add product to inventory
 					Inventory.AddProduct(newProduct);
 
-					// Validates that newProduct is present in Inventory.products
-					if (!Inventory.GetProducts().Contains(newProduct))
+					// Confirm that product was added
+					Product? createdProduct = Inventory.GetProductByName(newProduct.name);
+
+					if (createdProduct == null)
 					{
 						// If the new product is not present, print an error and early return
-						UserInterface.DisplayError("An error occurred with the operation.");
-						return;
+						UserInterface.DisplayError("An error occurred while saving the product.");
+						break;
 					}
 
-					// Gets the created product to display it to the user
-					Product createdProduct = Inventory.GetProductByName(newProduct.name);
-
-					// Display a success message and the created product
 					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.name}");
-
 					break;
 				case 2:
 					UserInterface.DisplayError("Method not implemented.");
@@ -61,7 +58,7 @@
 
 					break;
 				case 0:
-					UserInterface.DisplaySuccess("Bye!");
+					Console.WriteLine("Bye!");
 					return;
 			}
 		}

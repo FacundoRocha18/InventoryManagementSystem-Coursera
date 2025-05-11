@@ -63,6 +63,15 @@ public class UserInterface
 	public static Product PromptForProductDetails()
 	{
 		string name = PromptForProductName();
+
+		ValidationResult uniquenessResult = Validation.IsUniqueProductName(name);
+		
+		if (!uniquenessResult.IsValid)
+		{
+			DisplayError(uniquenessResult.ErrorMessage!);
+			return null!;
+		}
+
 		double price = PromptForProductPrice();
 		int stock = PromptForProductStock();
 
