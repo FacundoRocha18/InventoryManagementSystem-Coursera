@@ -1,4 +1,6 @@
-﻿public static class InventoryManagementSystem
+﻿using System.Reflection.Metadata;
+
+public static class InventoryManagementSystem
 {
 	public static void Main(string[] args)
 	{
@@ -12,75 +14,78 @@
 
 			switch (option)
 			{
-				case 1:
-					// Prompts the user for the product details
-					var (name, price, stock) = UserInterface.PromptForProductDetails();
-					
-					Product newProduct = new Product(name, price, stock);
-
-					// Null-check in case PromptForProductDetails() returns null explicitly
-					if (newProduct == null)
-					{
-						// If newProduct is not an instance of Product, print an error and early return
-						UserInterface.DisplayError("Failed to collect product details.");
-						break;
-					}
-
-					// Try to add product to inventory
-					Inventory.AddProduct(newProduct);
-
-					// Confirm that product was added
-					Product? createdProduct = Inventory.GetProductByName(newProduct.Name);
-
-					if (createdProduct == null)
-					{
-						// If the new product is not present, print an error and early return
-						UserInterface.DisplayError("An error occurred while saving the product.");
-						break;
-					}
-
-					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.Name}");
-					break;
-				case 2:
-					Product productToRemove = UserInterface.PromptForProductToRemove();
-
-					if (productToRemove == null)
-					{
-						UserInterface.DisplayError("Failed to collect product details.");
-						break;
-					}
-
-					Inventory.RemoveProduct(productToRemove);
-
-					Product? removedProduct = Inventory.GetProductByName(productToRemove.Name);
-
-					if (removedProduct != null)
-					{
-						UserInterface.DisplayError($"Failed to remove product: {removedProduct.Name}");
-						break;
-					}
-
-					UserInterface.DisplaySuccess($"Operation successful. Product removed: {productToRemove.Name}");
-					break;
-				case 3:
-					UserInterface.DisplayError("Method not implemented.");
-					break;
-				case 4:
-					IReadOnlyList<Product> products = Inventory.GetProducts();
-
-					if (products.Count == 0)
-					{
-						Console.WriteLine("No products available.");
-						break;
-					}
-
-					UserInterface.DisplayProducts(products);
-
-					break;
+				case 1: HandleAddProduct(); break;
+				case 2: HandleRemoveProduct(); break;
+				case 3: HandleUpdateStock(); break;
+				case 4: HandleViewProducts(); break;
 				case 0:
 					Console.WriteLine("Bye!");
 					return;
+				default:
+					UserInterface.DisplayError("Invalid option. Please try again.");
+					break;
 			}
 		}
+	}
+
+	private static void HandleAddProduct()
+	{
+		ProductInput input = UserInterface.PromptForProductDetails();
+		Product product = ProductService.Build(input);
+
+		if (ProductService.IsDuplicate(product))
+		{
+			UserInterface.DisplayError("A product with this name already exists.");
+			return;
+		}
+
+		if (!ProductService.TryAdd(product))
+		{
+			UserInterface.DisplayError("An error occurred while saving the product.");
+			return;
+		}
+
+		UserInterface.DisplaySuccess($"Product added: {product.Name}");
+	}
+
+	private static void HandleRemoveProduct()
+	{
+		Product productToRemove = UserInterface.PromptForProductToRemove();
+
+		if (productToRemove == null)
+		{
+			UserInterface.DisplayError("Failed to collect product details.");
+			return;
+		}
+
+		Inventory.RemoveProduct(productToRemove);
+
+		Product? removedProduct = Inventory.GetProductByName(productToRemove.Name);
+
+		if (removedProduct != null)
+		{
+			UserInterface.DisplayError($"Failed to remove product: {removedProduct.Name}");
+			return;
+		}
+
+		UserInterface.DisplaySuccess($"Operation successful. Product removed: {productToRemove.Name}");
+	}
+
+	private static void HandleUpdateStock()
+	{
+		UserInterface.DisplayError("Method not implemented.");
+	}
+
+	private static void HandleViewProducts()
+	{
+		IReadOnlyList<Product> products = Inventory.GetProducts();
+
+		if (products.Count == 0)
+		{
+			Console.WriteLine("No products available.");
+			return;
+		}
+
+		UserInterface.DisplayProducts(products);
 	}
 }

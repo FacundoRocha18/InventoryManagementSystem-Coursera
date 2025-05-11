@@ -59,13 +59,17 @@ public static class UserInterface
 		return int.Parse(input ?? throw new InvalidOperationException("Price input cannot be null."));
 	}
 
-	public static (string name, double price, int stock) PromptForProductDetails()
+	public static ProductInput PromptForProductDetails()
 	{
 		string name = PromptAndValidateProductName();
 		double price = PromptForProductPrice();
 		int stock = PromptForProductStock();
 
-		return (name, price, stock);
+		return new ProductInput(
+			name,
+			price,
+			stock
+		);
 	}
 
 	private static string PromptAndValidateProductName()
