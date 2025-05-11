@@ -1,4 +1,4 @@
-public class Inventory
+public static class Inventory
 {
 	private static readonly List<Product> products = [];
 
@@ -7,13 +7,15 @@ public class Inventory
 		products.Add(product);
 	}
 
-	public static List<Product> GetProducts()
+	public static void RemoveProduct(Product product)
 	{
-		return products;
+		products.Remove(product);
 	}
 
-	public static Product GetProductByName(string name)
+	public static IReadOnlyList<Product> GetProducts() => products;
+
+	public static Product? GetProductByName(string name)
 	{
-		return products.FirstOrDefault(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase))!;
+		return products.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 	}
 }

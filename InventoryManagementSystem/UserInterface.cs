@@ -1,6 +1,5 @@
-public class UserInterface
+public static class UserInterface
 {
-
 	public static void DisplayMainMenu()
 	{
 		Console.WriteLine("Inventory Management System");
@@ -11,7 +10,7 @@ public class UserInterface
 		Console.WriteLine("0. Exit");
 	}
 
-	public static void DisplayProducts(List<Product> products)
+	public static void DisplayProducts(IReadOnlyList<Product> products)
 	{
 		Console.WriteLine("Products in inventory:");
 		Console.WriteLine(new string('-', 40));
@@ -20,7 +19,7 @@ public class UserInterface
 
 		foreach (Product product in products)
 		{
-			Console.WriteLine($"{product.name,-20} {product.price,-10:C} {product.stock,-10}");
+			Console.WriteLine($"{product.Name,-20} {product.Price,-10:C} {product.Stock,-10}");
 			Console.WriteLine(new string('-', 40));
 		}
 
@@ -28,7 +27,7 @@ public class UserInterface
 
 	public static void DisplayError(string? error)
 	{
-		Console.WriteLine($"Error: {error}" ?? "Unknown error occurred.");
+		Console.WriteLine(error != null ? $"Error: {error}" : "Unknown error occurred.");
 	}
 
 	public static void DisplaySuccess(string message)
@@ -60,22 +59,53 @@ public class UserInterface
 		return int.Parse(input ?? throw new InvalidOperationException("Price input cannot be null."));
 	}
 
-	public static Product PromptForProductDetails()
+	public static (string name, double price, int stock) PromptForProductDetails()
 	{
-		string name = PromptForProductName();
-
-		ValidationResult uniquenessResult = Validation.IsUniqueProductName(name);
-		
-		if (!uniquenessResult.IsValid)
-		{
-			DisplayError(uniquenessResult.ErrorMessage!);
-			return null!;
-		}
-
+		string name = PromptAndValidateProductName();
 		double price = PromptForProductPrice();
 		int stock = PromptForProductStock();
 
-		return new Product(name, price, stock);
+		return (name, price, stock);
+	}
+
+	private static string PromptAndValidateProductName()
+	{
+		while (true)
+		{
+			string name = PromptForProductName();
+
+			var uniquenessResult = Validation.IsUniqueProductName(name);
+			if (!uniquenessResult.IsValid)
+			{
+				DisplayError(uniquenessResult.ErrorMessage!);
+				continue;
+			}
+
+			return name;
+		}
+	}
+
+	public static Product PromptForProductToRemove()
+	{
+		string name = PromptForProductName();
+
+		ValidationResult result = Validation.IsValidProductName(name);
+
+		if (!result.IsValid)
+		{
+			DisplayError(result.ErrorMessage);
+			return null!;
+		}
+
+		Product? product = Inventory.GetProductByName(name);
+
+		if (product == null)
+		{
+			DisplayError($"Product '{name}' not found.");
+			return null!;
+		}
+
+		return product;
 	}
 
 	private static void Prompt(string message)
@@ -83,84 +113,44 @@ public class UserInterface
 		Console.Write(message);
 	}
 
-	private static string PromptForProductName()
+	private static T PromptWithValidation<T>(
+		string message,
+		Func<string?, ValidationResult> validate,
+		Func<string, T> parse,
+		string fallbackError = "Invalid input."
+)
 	{
-		string? input;
-		string name;
-
 		while (true)
 		{
-			Prompt("Please enter the product name: ");
+			Prompt(message);
+			string? input = Console.ReadLine();
 
-			input = Console.ReadLine();
-
-			ValidationResult result = Validation.IsValidProductName(input);
-
+			var result = validate(input);
 			if (!result.IsValid)
 			{
-				DisplayError(result.ErrorMessage);
+				DisplayError(result.ErrorMessage ?? fallbackError);
 				continue;
 			}
 
-			break;
+			return parse(input!);
 		}
-
-		name = input ?? throw new InvalidOperationException("Name input cannot be null.");
-
-		return name;
 	}
 
-	private static double PromptForProductPrice()
-	{
-		string? input;
-		double price;
+	private static string PromptForProductName() => PromptWithValidation(
+		"Please enter the Product Name: ",
+		Validation.IsValidProductName,
+		name => name
+	);
 
-		while (true)
-		{
-			Prompt("Please enter the Product Price: ");
+	private static double PromptForProductPrice() => PromptWithValidation(
+		"Please enter the Product Price: ",
+		Validation.IsValidPrice,
+		double.Parse
+	);
 
-			input = Console.ReadLine();
-
-			ValidationResult result = Validation.IsValidPrice(input);
-
-			if (!result.IsValid)
-			{
-				DisplayError(result.ErrorMessage);
-				continue;
-			}
-
-			break;
-		}
-
-		price = double.Parse(input ?? throw new InvalidOperationException("Price input cannot be null."));
-
-		return price;
-	}
-
-	private static int PromptForProductStock()
-	{
-		string? input;
-		int stock;
-
-		while (true)
-		{
-			Prompt("Please enter the Product Stock: ");
-
-			input = Console.ReadLine();
-
-			ValidationResult result = Validation.IsValidStock(input);
-
-			if (!result.IsValid)
-			{
-				DisplayError(result.ErrorMessage);
-				continue;
-			}
-
-			break;
-		}
-
-		stock = int.Parse(input ?? throw new InvalidOperationException("Stock input cannot be null."));
-
-		return stock;
-	}
+	private static int PromptForProductStock() => PromptWithValidation(
+		"Please enter the Product Stock: ",
+		Validation.IsValidStock,
+		int.Parse
+	);
 }

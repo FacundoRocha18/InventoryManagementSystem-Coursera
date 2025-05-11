@@ -14,7 +14,9 @@
 			{
 				case 1:
 					// Prompts the user for the product details
-					Product newProduct = UserInterface.PromptForProductDetails();
+					var (name, price, stock) = UserInterface.PromptForProductDetails();
+					
+					Product newProduct = new Product(name, price, stock);
 
 					// Null-check in case PromptForProductDetails() returns null explicitly
 					if (newProduct == null)
@@ -28,7 +30,7 @@
 					Inventory.AddProduct(newProduct);
 
 					// Confirm that product was added
-					Product? createdProduct = Inventory.GetProductByName(newProduct.name);
+					Product? createdProduct = Inventory.GetProductByName(newProduct.Name);
 
 					if (createdProduct == null)
 					{
@@ -37,21 +39,39 @@
 						break;
 					}
 
-					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.name}");
+					UserInterface.DisplaySuccess($"Operation successful. Product added: {createdProduct.Name}");
 					break;
 				case 2:
-					UserInterface.DisplayError("Method not implemented.");
+					Product productToRemove = UserInterface.PromptForProductToRemove();
+
+					if (productToRemove == null)
+					{
+						UserInterface.DisplayError("Failed to collect product details.");
+						break;
+					}
+
+					Inventory.RemoveProduct(productToRemove);
+
+					Product? removedProduct = Inventory.GetProductByName(productToRemove.Name);
+
+					if (removedProduct != null)
+					{
+						UserInterface.DisplayError($"Failed to remove product: {removedProduct.Name}");
+						break;
+					}
+
+					UserInterface.DisplaySuccess($"Operation successful. Product removed: {productToRemove.Name}");
 					break;
 				case 3:
 					UserInterface.DisplayError("Method not implemented.");
 					break;
 				case 4:
-					List<Product> products = Inventory.GetProducts();
+					IReadOnlyList<Product> products = Inventory.GetProducts();
 
 					if (products.Count == 0)
 					{
 						Console.WriteLine("No products available.");
-						return;
+						break;
 					}
 
 					UserInterface.DisplayProducts(products);

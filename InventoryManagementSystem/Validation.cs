@@ -103,7 +103,7 @@ public static class Validation
 	public static ValidationResult IsUniqueProductName(string name)
 	{
 		// Checks if the name already exists in the list of products
-		if (Inventory.GetProducts().Any(product => product.name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+		if (Inventory.GetProducts().Any(product => product.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
 		{
 			return new ValidationResult
 			{
