@@ -16,6 +16,7 @@
 				case 2: HandleRemoveProduct(); break;
 				case 3: HandleRestockProduct(); break;
 				case 4: HandleViewProducts(); break;
+				case 5: HandleSellProduct(); break;
 				case 0:
 					Console.WriteLine("Bye!");
 					return;
@@ -91,5 +92,10 @@
 		}
 
 		UserInterface.DisplayProductList(products);
+	}
+
+	private static void HandleSellProduct()
+	{
+		Console.WriteLine("Method not implemented yet");
 	}
 }

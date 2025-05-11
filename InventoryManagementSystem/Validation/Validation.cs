@@ -3,7 +3,7 @@ public static class Validation
 {
 	private const int MaxStock = 10000;
 	private const double MaxPrice = 1_000_000;
-	private const int MaxMenuOption = 4;
+	private const int MaxMenuOption = 5;
 	private const int MinNameChars = 3;
 	private const int MaxNameChars = 75;
 	private const int MaxNameDigits = 3;
