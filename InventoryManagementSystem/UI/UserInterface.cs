@@ -10,7 +10,7 @@ public static class UserInterface
 		Console.WriteLine("0. Exit");
 	}
 
-	public static void DisplayProducts(IReadOnlyList<Product> products)
+	public static void DisplayProductList(IReadOnlyList<Product> products)
 	{
 		Console.WriteLine("Products in inventory:");
 		Console.WriteLine(new string('-', 40));
@@ -22,7 +22,6 @@ public static class UserInterface
 			Console.WriteLine($"{product.Name,-20} {product.Price,-10:C} {product.Stock,-10}");
 			Console.WriteLine(new string('-', 40));
 		}
-
 	}
 
 	public static void DisplayError(string? error)
@@ -41,7 +40,7 @@ public static class UserInterface
 
 		while (true)
 		{
-			Console.WriteLine("Please select an option: ");
+			Console.Write("Please select an option: ");
 
 			input = Console.ReadLine();
 
@@ -72,51 +71,32 @@ public static class UserInterface
 		);
 	}
 
-	public static Product PromptForProductToRemove()
-	{
-		string name = PromptForProductName();
-
-		ValidationResult result = Validation.IsValidProductName(name);
-
-		if (!result.IsValid)
-		{
-			DisplayError(result.ErrorMessage);
-			return null!;
-		}
-
-		Product? product = Inventory.GetProductByName(name);
-
-		if (product == null)
-		{
-			DisplayError($"Product '{name}' not found.");
-			return null!;
-		}
-
-		return product;
-	}
-
 	public static string PromptForProductName() => PromptWithValidation(
 		"Please enter the Product Name: ",
 		Validation.IsValidProductName,
-		name => name
+		name => name,
+		"Invalid name input."
 	);
 
 	public static double PromptForProductPrice() => PromptWithValidation(
 		"Please enter the Product Price: ",
 		Validation.IsValidPrice,
-		double.Parse
+		double.Parse,
+		"Invalid price input."
 	);
 
 	public static int PromptForProductStock() => PromptWithValidation(
 		"Please enter the Product Stock: ",
 		Validation.IsValidStock,
-		int.Parse
+		int.Parse,
+		"Invalid stock input."
 	);
 
 	public static int PromptForRestockAmount() => PromptWithValidation(
 		"Please enter the Restock amount: ",
 		Validation.IsValidStock,
-		int.Parse
+		int.Parse,
+		"Invalid stock input."
 	);
 
 	private static string PromptAndValidateProductName()
@@ -145,7 +125,7 @@ public static class UserInterface
 	{
 		while (true)
 		{
-			Console.WriteLine(message);
+			Console.Write(message);
 			string? input = Console.ReadLine();
 
 			var result = validate(input);

@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 public static class ProductService
 {
 	public static Product Build(ProductInput input) => new(input.Name, input.Price, input.Stock);
@@ -8,7 +6,9 @@ public static class ProductService
 
 	public static Product? GetProductToRemove()
 	{
-		return UserInterface.PromptForProductToRemove();
+		string name = UserInterface.PromptForProductName();
+
+		return Inventory.GetProductByName(name);
 	}
 
 	public static bool TryAdd(Product product)
@@ -21,6 +21,7 @@ public static class ProductService
 	public static bool TryRemove(Product product)
 	{
 		Inventory.RemoveProduct(product);
+
 		return Inventory.GetProductByName(product.Name) == null;
 	}
 

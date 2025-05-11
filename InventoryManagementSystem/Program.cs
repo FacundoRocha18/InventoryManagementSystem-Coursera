@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-public static class InventoryManagementSystem
+﻿public static class InventoryManagementSystem
 {
 	public static void Main(string[] args)
 	{
@@ -50,7 +48,9 @@ public static class InventoryManagementSystem
 
 	private static void HandleRemoveProduct()
 	{
-		Product? product = ProductService.GetProductToRemove();
+		string name = UserInterface.PromptForProductName();
+
+		Product? product = Inventory.GetProductByName(name);
 
 		if (product == null)
 		{
@@ -91,6 +91,6 @@ public static class InventoryManagementSystem
 			return;
 		}
 
-		UserInterface.DisplayProducts(products);
+		UserInterface.DisplayProductList(products);
 	}
 }
