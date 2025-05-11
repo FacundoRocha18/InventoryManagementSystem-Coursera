@@ -41,7 +41,7 @@ public static class UserInterface
 
 		while (true)
 		{
-			Prompt("Please select an option: ");
+			Console.WriteLine("Please select an option: ");
 
 			input = Console.ReadLine();
 
@@ -72,23 +72,6 @@ public static class UserInterface
 		);
 	}
 
-	private static string PromptAndValidateProductName()
-	{
-		while (true)
-		{
-			string name = PromptForProductName();
-
-			var uniquenessResult = Validation.IsUniqueProductName(name);
-			if (!uniquenessResult.IsValid)
-			{
-				DisplayError(uniquenessResult.ErrorMessage!);
-				continue;
-			}
-
-			return name;
-		}
-	}
-
 	public static Product PromptForProductToRemove()
 	{
 		string name = PromptForProductName();
@@ -112,9 +95,45 @@ public static class UserInterface
 		return product;
 	}
 
-	private static void Prompt(string message)
+	public static string PromptForProductName() => PromptWithValidation(
+		"Please enter the Product Name: ",
+		Validation.IsValidProductName,
+		name => name
+	);
+
+	public static double PromptForProductPrice() => PromptWithValidation(
+		"Please enter the Product Price: ",
+		Validation.IsValidPrice,
+		double.Parse
+	);
+
+	public static int PromptForProductStock() => PromptWithValidation(
+		"Please enter the Product Stock: ",
+		Validation.IsValidStock,
+		int.Parse
+	);
+
+	public static int PromptForRestockAmount() => PromptWithValidation(
+		"Please enter the Restock amount: ",
+		Validation.IsValidStock,
+		int.Parse
+	);
+
+	private static string PromptAndValidateProductName()
 	{
-		Console.Write(message);
+		while (true)
+		{
+			string name = PromptForProductName();
+
+			var uniquenessResult = Validation.IsUniqueProductName(name);
+			if (!uniquenessResult.IsValid)
+			{
+				DisplayError(uniquenessResult.ErrorMessage!);
+				continue;
+			}
+
+			return name;
+		}
 	}
 
 	private static T PromptWithValidation<T>(
@@ -126,7 +145,7 @@ public static class UserInterface
 	{
 		while (true)
 		{
-			Prompt(message);
+			Console.WriteLine(message);
 			string? input = Console.ReadLine();
 
 			var result = validate(input);
@@ -139,22 +158,4 @@ public static class UserInterface
 			return parse(input!);
 		}
 	}
-
-	private static string PromptForProductName() => PromptWithValidation(
-		"Please enter the Product Name: ",
-		Validation.IsValidProductName,
-		name => name
-	);
-
-	private static double PromptForProductPrice() => PromptWithValidation(
-		"Please enter the Product Price: ",
-		Validation.IsValidPrice,
-		double.Parse
-	);
-
-	private static int PromptForProductStock() => PromptWithValidation(
-		"Please enter the Product Stock: ",
-		Validation.IsValidStock,
-		int.Parse
-	);
 }

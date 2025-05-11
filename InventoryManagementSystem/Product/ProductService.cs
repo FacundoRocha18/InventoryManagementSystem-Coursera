@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 public static class ProductService
 {
 	public static Product Build(ProductInput input) => new(input.Name, input.Price, input.Stock);
@@ -20,5 +22,24 @@ public static class ProductService
 	{
 		Inventory.RemoveProduct(product);
 		return Inventory.GetProductByName(product.Name) == null;
+	}
+
+	public static bool RestockProductByName(string name, int amount)
+	{
+		Product? product = Inventory.GetProductByName(name);
+
+		if (product == null) {
+			return false;
+		}
+
+		try
+		{
+			product.Restock(amount);
+			return true;
+		}
+		catch (ArgumentException)
+		{
+			return false;
+		}
 	}
 }

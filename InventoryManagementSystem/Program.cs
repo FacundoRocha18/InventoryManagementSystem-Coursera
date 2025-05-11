@@ -16,7 +16,7 @@ public static class InventoryManagementSystem
 			{
 				case 1: HandleAddProduct(); break;
 				case 2: HandleRemoveProduct(); break;
-				case 3: HandleUpdateStock(); break;
+				case 3: HandleRestockProduct(); break;
 				case 4: HandleViewProducts(); break;
 				case 0:
 					Console.WriteLine("Bye!");
@@ -67,9 +67,18 @@ public static class InventoryManagementSystem
 		UserInterface.DisplaySuccess($"Product removed: {product.Name}");
 	}
 
-	private static void HandleUpdateStock()
+	private static void HandleRestockProduct()
 	{
-		UserInterface.DisplayError("Method not implemented.");
+		string name = UserInterface.PromptForProductName();
+		int amount = UserInterface.PromptForRestockAmount();
+
+		if (!ProductService.RestockProductByName(name, amount))
+		{
+			UserInterface.DisplayError("Failed to restock product.");
+			return;
+		}
+
+		UserInterface.DisplaySuccess($"Product '{name}' restocked by {amount} units.");
 	}
 
 	private static void HandleViewProducts()
