@@ -14,7 +14,7 @@ public static class Inventory
 
 	public static IReadOnlyList<Product> GetProducts() => products;
 
-	public static Product? GetProductByName(string name)
+	public static Product? FindProductByName(string name)
 	{
 		return products.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 	}

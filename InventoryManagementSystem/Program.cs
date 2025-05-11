@@ -49,12 +49,11 @@
 	private static void HandleRemoveProduct()
 	{
 		string name = UserInterface.PromptForProductName();
-
-		Product? product = Inventory.GetProductByName(name);
+		Product? product = ProductService.FindByName(name);
 
 		if (product == null)
 		{
-			UserInterface.DisplayError("Failed to collect product details.");
+			UserInterface.DisplayError($"Product '{name}' not found.");
 			return;
 		}
 

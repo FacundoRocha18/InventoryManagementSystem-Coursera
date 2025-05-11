@@ -2,34 +2,30 @@ public static class ProductService
 {
 	public static Product Build(ProductInput input) => new(input.Name, input.Price, input.Stock);
 
-	public static bool IsDuplicate(Product product) => Inventory.GetProductByName(product.Name) != null;
+	public static Product? FindByName(string name) => Inventory.FindProductByName(name);
 
-	public static Product? GetProductToRemove()
-	{
-		string name = UserInterface.PromptForProductName();
-
-		return Inventory.GetProductByName(name);
-	}
+	public static bool IsDuplicate(Product product) => Inventory.FindProductByName(product.Name) != null;
 
 	public static bool TryAdd(Product product)
 	{
 		Inventory.AddProduct(product);
 
-		return Inventory.GetProductByName(product.Name) != null;
+		return Inventory.FindProductByName(product.Name) != null;
 	}
 
 	public static bool TryRemove(Product product)
 	{
 		Inventory.RemoveProduct(product);
 
-		return Inventory.GetProductByName(product.Name) == null;
+		return Inventory.FindProductByName(product.Name) == null;
 	}
 
 	public static bool RestockProductByName(string name, int amount)
 	{
-		Product? product = Inventory.GetProductByName(name);
+		Product? product = Inventory.FindProductByName(name);
 
-		if (product == null) {
+		if (product == null)
+		{
 			return false;
 		}
 
