@@ -4,14 +4,20 @@ public class Product(string name, double price, int stock)
 	public double Price { get; set; } = price;
 	public int Stock { get; set; } = stock;
 
-	public void Restock(int amount)
+	public ValidationResult Restock(int amount)
 	{
 		if (amount <= 0)
 		{
-			throw new ArgumentException("Restock amount must be greater than 0.");
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = "Restock amount must be greater than 0."
+			};
 		}
 
 		Stock += amount;
+
+		return new ValidationResult { IsValid = true };
 	}
 
 	public ValidationResult Sell(int quantity)
@@ -27,7 +33,7 @@ public class Product(string name, double price, int stock)
 		}
 
 		Stock -= quantity;
-		
+
 		return new ValidationResult { IsValid = true };
 	}
 }

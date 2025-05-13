@@ -73,8 +73,10 @@
 	{
 		string name = UserInterface.PromptForProductName();
 		int amount = UserInterface.PromptForRestockAmount();
+		
+		ValidationResult result = ProductService.RestockProductByName(name, amount);
 
-		if (!ProductService.RestockProductByName(name, amount))
+		if (!result.IsValid)
 		{
 			UserInterface.DisplayError("Failed to restock product.");
 			return;

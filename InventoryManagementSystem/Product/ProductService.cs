@@ -20,24 +20,20 @@ public static class ProductService
 		return Inventory.FindProductByName(product.Name) == null;
 	}
 
-	public static bool RestockProductByName(string name, int amount)
+	public static ValidationResult RestockProductByName(string name, int amount)
 	{
 		Product? product = Inventory.FindProductByName(name);
 
 		if (product == null)
 		{
-			return false;
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = $"Product '{name}' not found."
+			};
 		}
 
-		try
-		{
-			product.Restock(amount);
-			return true;
-		}
-		catch (ArgumentException)
-		{
-			return false;
-		}
+		return product.Restock(amount);
 	}
 
 	public static ValidationResult SellProductByName(string name, int quantity)
