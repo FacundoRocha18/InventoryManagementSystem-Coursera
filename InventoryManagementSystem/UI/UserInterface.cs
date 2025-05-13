@@ -51,7 +51,7 @@ public static class UserInterface
 
 			input = Console.ReadLine();
 
-			ValidationResult result = Validation.IsValidMenuOption(input);
+			ValidationResult<int> result = Validation.IsValidMenuOption(input);
 
 			if (!result.IsValid)
 			{
@@ -81,28 +81,24 @@ public static class UserInterface
 	public static string PromptForProductName() => PromptWithValidation(
 		"Please enter the Product Name: ",
 		Validation.IsValidProductName,
-		name => name,
 		"Invalid name input."
 	);
 
 	public static double PromptForProductPrice() => PromptWithValidation(
 		"Please enter the Product Price: ",
 		Validation.IsValidPrice,
-		double.Parse,
 		"Invalid price input."
 	);
 
 	public static int PromptForProductStock() => PromptWithValidation(
 		"Please enter the Product Stock: ",
 		Validation.IsValidStock,
-		int.Parse,
 		"Invalid stock input."
 	);
 
 	public static int PromptForRestockAmount() => PromptWithValidation(
 		"Please enter the Restock amount: ",
 		Validation.IsValidStock,
-		int.Parse,
 		"Invalid stock input."
 	);
 
@@ -110,7 +106,6 @@ public static class UserInterface
 	PromptWithValidation(
 		"Please enter the quantity: ",
 		Validation.IsValidQuantity,
-		int.Parse,
 		"Invalid quantity entered."
 	);
 
@@ -132,10 +127,9 @@ public static class UserInterface
 	}
 
 	private static T PromptWithValidation<T>(
-		string message,
-		Func<string?, ValidationResult> validate,
-		Func<string, T> parse,
-		string fallbackError = "Invalid input."
+	string message,
+	Func<string?, ValidationResult<T>> validate,
+	string fallbackError = "Invalid input."
 )
 	{
 		while (true)
@@ -150,7 +144,7 @@ public static class UserInterface
 				continue;
 			}
 
-			return parse(input!);
+			return result.Value!;
 		}
 	}
 }
