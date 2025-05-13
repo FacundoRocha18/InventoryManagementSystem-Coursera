@@ -204,4 +204,21 @@ public static class Validation
 
 		return new ValidationResult { IsValid = true };
 	}
+
+	public static ValidationResult IsValidQuantity(string? input)
+	{
+		if (string.IsNullOrWhiteSpace(input))
+			return new ValidationResult { IsValid = false, ErrorMessage = "Quantity cannot be empty." };
+
+		if (!int.TryParse(input, out int quantity))
+			return new ValidationResult { IsValid = false, ErrorMessage = "Quantity must be a number." };
+
+		if (quantity <= 0)
+			return new ValidationResult { IsValid = false, ErrorMessage = "Quantity must be greater than zero." };
+
+		if (quantity > 10_000)
+			return new ValidationResult { IsValid = false, ErrorMessage = "Quantity exceeds the allowed maximum." };
+
+		return new ValidationResult { IsValid = true };
+	}
 }

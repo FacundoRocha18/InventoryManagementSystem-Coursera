@@ -1,26 +1,33 @@
 public static class UserInterface
 {
+	public static void DisplayWelcome()
+	{
+		Console.Clear();
+		Console.WriteLine(new string('-', 80));
+		Console.WriteLine("Welcome to the Inventory Management System!");
+		Console.WriteLine(new string('-', 80));
+	}
 	public static void DisplayMainMenu()
 	{
-		Console.WriteLine("Inventory Management System");
 		Console.WriteLine("1. Add Product");
 		Console.WriteLine("2. Remove Product");
 		Console.WriteLine("3. Update Stock");
 		Console.WriteLine("4. View Products");
+		Console.WriteLine("5. Sell Product");
 		Console.WriteLine("0. Exit");
 	}
 
 	public static void DisplayProductList(IReadOnlyList<Product> products)
 	{
 		Console.WriteLine("Products in inventory:");
-		Console.WriteLine(new string('-', 40));
-		Console.WriteLine($"{"Name",-20} {"Price",-10} {"Stock",-10}");
-		Console.WriteLine(new string('-', 40));
+		Console.WriteLine(new string('-', 80));
+		Console.WriteLine($"{"Name",-40} {"Price",-10} {"Stock",-10}");
+		Console.WriteLine(new string('-', 80));
 
 		foreach (Product product in products)
 		{
-			Console.WriteLine($"{product.Name,-20} {product.Price,-10:C} {product.Stock,-10}");
-			Console.WriteLine(new string('-', 40));
+			Console.WriteLine($"{product.Name,-40} {product.Price,-10:C} {product.Stock,-10}");
+			Console.WriteLine(new string('-', 80));
 		}
 	}
 
@@ -97,6 +104,14 @@ public static class UserInterface
 		Validation.IsValidStock,
 		int.Parse,
 		"Invalid stock input."
+	);
+
+	public static int PromptForQuantity() =>
+	PromptWithValidation(
+		"Please enter the quantity: ",
+		Validation.IsValidQuantity,
+		int.Parse,
+		"Invalid quantity entered."
 	);
 
 	private static string PromptAndValidateProductName()

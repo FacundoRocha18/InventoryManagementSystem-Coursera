@@ -39,4 +39,20 @@ public static class ProductService
 			return false;
 		}
 	}
+
+	public static ValidationResult SellProductByName(string name, int quantity)
+	{
+		Product? product = Inventory.FindProductByName(name);
+
+		if (product == null)
+		{
+			return new ValidationResult
+			{
+				IsValid = false,
+				ErrorMessage = $"Product '{name}' not found."
+			};
+		}
+
+		return product.Sell(quantity);
+	}
 }

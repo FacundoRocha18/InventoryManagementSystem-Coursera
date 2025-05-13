@@ -4,6 +4,8 @@
 	{
 		int option;
 
+		UserInterface.DisplayWelcome();
+
 		while (true)
 		{
 			UserInterface.DisplayMainMenu();
@@ -96,6 +98,19 @@
 
 	private static void HandleSellProduct()
 	{
+		string name = UserInterface.PromptForProductName();
+		int quantity = UserInterface.PromptForQuantity();
+
+		ValidationResult result = ProductService.SellProductByName(name, quantity);
+
+		if (!result.IsValid)
+		{
+			UserInterface.DisplayError(result.ErrorMessage!);
+			return;
+		}
+
+		UserInterface.DisplaySuccess($"Sold {quantity} unit(s) of '{name}'.");
+
 		Console.WriteLine("Method not implemented yet");
 	}
 }
