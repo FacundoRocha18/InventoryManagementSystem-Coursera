@@ -110,7 +110,5 @@
 		}
 
 		UserInterface.DisplaySuccess($"Sold {quantity} unit(s) of '{name}'.");
-
-		Console.WriteLine("Method not implemented yet");
 	}
 }
