@@ -33,12 +33,16 @@ public static class UserInterface
 
 	public static void DisplayError(string? error)
 	{
+		Console.WriteLine(new string('-', 80));
 		Console.WriteLine(error != null ? $"Error: {error}" : "Unknown error occurred.");
+		Console.WriteLine(new string('-', 80));
 	}
 
 	public static void DisplaySuccess(string message)
 	{
+		Console.WriteLine(new string('-', 80));
 		Console.WriteLine($"Success: {message}");
+		Console.WriteLine(new string('-', 80));
 	}
 
 	public static int PromptForMenuOption()
@@ -78,32 +82,32 @@ public static class UserInterface
 		);
 	}
 
-	public static string PromptForProductName() => PromptWithValidation(
+	public static string PromptForProductName() => Prompt(
 		"Please enter the Product Name: ",
 		Validation.IsValidProductName,
 		"Invalid name input."
 	);
 
-	public static double PromptForProductPrice() => PromptWithValidation(
+	public static double PromptForProductPrice() => Prompt(
 		"Please enter the Product Price: ",
 		Validation.IsValidPrice,
 		"Invalid price input."
 	);
 
-	public static int PromptForProductStock() => PromptWithValidation(
+	public static int PromptForProductStock() => Prompt(
 		"Please enter the Product Stock: ",
 		Validation.IsValidStock,
 		"Invalid stock input."
 	);
 
-	public static int PromptForRestockAmount() => PromptWithValidation(
+	public static int PromptForRestockAmount() => Prompt(
 		"Please enter the Restock amount: ",
 		Validation.IsValidStock,
 		"Invalid stock input."
 	);
 
 	public static int PromptForQuantity() =>
-	PromptWithValidation(
+	Prompt(
 		"Please enter the quantity: ",
 		Validation.IsValidQuantity,
 		"Invalid quantity entered."
@@ -126,7 +130,7 @@ public static class UserInterface
 		}
 	}
 
-	private static T PromptWithValidation<T>(
+	private static T Prompt<T>(
 	string message,
 	Func<string?, ValidationResult<T>> validate,
 	string fallbackError = "Invalid input."
