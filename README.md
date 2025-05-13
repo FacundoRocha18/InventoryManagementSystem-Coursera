@@ -2,273 +2,349 @@
 
 ## 1. Design Challenge Review
 
-  This project is part of the Microsoft Back-end Developer Certification in Coursera.
+This project is part of the Microsoft Back-end Developer Certification in Coursera.
 
-  Chosen Design Challenge: **Inventory Management System**.
+Chosen Design Challenge: **Inventory Management System**.
 
-  Key requirements overview:
+### Key Requirements Overview
 
-- Create a console application.
+* Console-based application
+* User features:
 
-- The users should be able to:
-
-  - Add new products (name, price, stock).
-
-  - Update stock (sold/restocked).
-
-  - View all products and their stock.
-
-  - Remove products from inventory.
+  * Add new products (name, price, stock)
+  * Update stock (sell/restock)
+  * View all products and stock levels
+  * Remove products from inventory
 
 ## 2. Project Requirements and Objectives
 
 ### Functional Requirements
 
-- Add new products with name, price, and stock quantity.
-- Update stock when products are sold or restocked.
-- View all products and their stock levels.
-- Remove products from inventory.
+* Add new products with name, price, and stock quantity
+* Update stock through selling or restocking
+* View all products and their current stock
+* Remove products from inventory
 
 ### Non-Functional Requirements
 
-- Performance:
-  - Operations like adding, updating, or deleting products should complete instantly.
-  - Startup time should be under 1 second.
-- Reliability:
-  - Validate user inputs to ensure the data is correct and avoid issues.
-- Maintainability:
-  - The code should be modular, easy to read, maintain and upgrade.
-- Usability:
-  - The app should have clear prompts and a menu system.
-  - The app should have easy navigation with number-based menu choices.
-  - The app should have helpful error messages and confirmations.
+* **Performance**: Instant operation and startup under 1 second
+* **Reliability**: Validate all user inputs
+* **Maintainability**: Modular and clean codebase
+* **Usability**: Clear prompts, number-based menu, and helpful feedback
 
 ### Main Objectives
 
-- Build a working console app that meets all functional and non-functional requirements.
-- Demonstrate understanding of control structures, methods, and data structures.
+* Deliver a console app that meets requirements
+* Demonstrate control structures, methods, and data abstraction
 
 ## 3. Design Outline
 
 ### Overall Goal
 
-Develop an inventory management system where the user can manage products through the console.
+Enable users to manage products through a simple, responsive console UI.
 
-### Major functions
+### Major Functional Areas
 
-- Product Management: Creating, updating, and removing product data.
-- Stock Operations: Handling inventory quantity changes like sells, restock, etc.
-- System Navigation: User interface and input flow.
+* **Product Management**: Create, remove, inspect product objects
+* **Stock Management**: Track and adjust inventory through sales and restocks
+* **UI Navigation**: Prompt user inputs and route to appropriate logic
 
-### Major functions break-down
-  
-- **Program** (Entry Point):
-  - **Purpose**: It will be the central controller for the app.
-  - **Responsibilities**:
-    - Starts the application.
-    - Calls the UI component to display the main menu.
-    - Coordinates actions between the different modules.
-    - Loops until the user chooses to exit.
+### Module Breakdown
 
-- **UserInterface**:
-  - **Purpose**: Handles all input/output interactions with the user.
-  - **Responsibilities**:
-    - Display menus and prompts.
-    - Collect and validate user input.
-    - Display results, error messages, and confirmation messages.
-    - Improve usability with clear messages and menu navigation.
+#### Program (Main Controller)
 
-- **Product**:
-  - **Purpose**: Represents individual product data and logic.
-  - **Responsibilities**:
-    - Store product properties like name, price, and stock.
-    - Validate values (e.g., non-negative stock or price).
+* Entry point, application loop
+* Delegates to UI and service methods
 
-- **Inventory**
-  - **Purpose**: Manages the collection of products.
-  - **Responsibilities**:
-    - Add new products.
-    - Find, update, or remove products by name or ID.
-    - Adjust stock levels based on user actions.
-    - List all products with current stock and pricing.
-    - Prevent duplicate products or invalid operations.
+#### UserInterface Module
 
-### Modules
+* Handles all prompts and outputs
+* Validates input and delegates parsing
+* Displays errors and confirmations
 
-#### Each core function will be developed as an independent module
+#### Product Domain Model
 
-- UserInterface
-- Inventory
-- Product
+* Domain model with properties and behaviors
+* Includes `Sell()` and `Restock()` logic with `ValidationResult`
 
-#### The main core functions will be tied together by the main class
+#### Inventory Management
 
-- Program
+* In-memory product store
+* Responsible for lookups, additions, removals
+
+#### ProductService Logic
+
+* Coordinates inventory and product logic
+* Exposes high-level operations like `SellProductByName`, `RestockProductByName`
+
+#### Validation Logic
+
+* Centralized validation logic for names, prices, stock, menu input
+* Uses `ValidationResult<T>` for consistent error/value handling
 
 ### Flow Chart / Diagram
 
-![alt text](<public/Inventory System Flowchart.jpg>)
+![Inventory Flowchart](<public/Inventory System Flowchart.jpg>)
 
-- Created using Miro.
+### Transition to Pseudocode
 
-### Transition to pseudocode
-
-| Flowchart Block                              | Pseudocode Step                          |
-|---------------------------------------------|------------------------------------------|
-| Start                                        | Start                                    |
-| Display Main Menu                           | Display Main Menu                        |
-| Prompt the User to select an option         | Prompt user for menu option              |
-| Validate Menu Selection                     | Validate selected menu option            |
-| Is Menu Selection Valid?                    | If menu option is valid                  |
-| Display error message                       | Show "Invalid option" error              |
-| Select Menu Option                          | Read selected menu option                |
-| User selects "Add Product"                  | If user selects "Add Product"            |
-| Prompt for Product Name, Price, Stock       | Prompt user for product details          |
-| Validate Product Data                       | Validate product name, price, and stock  |
-| Is Product Data Valid?                      | If product data is valid                 |
-| Add Product to Inventory                    | Add product to inventory                 |
-| Validate Operation Success                  | Validate product was added successfully  |
-| Was Operation Successful?                   | If add was successful                    |
-| Display success message                     | Show success message                     |
-| User selects "Remove Product"               | If user selects "Remove Product"         |
-| Prompt for Product Name                     | Prompt user for product name             |
-| Validate Product Name                       | Validate that product name is valid      |
-| Is Product Name Valid?                      | If product name is valid                 |
-| Remove Product from Inventory               | Remove product from inventory            |
-| Validate Operation Success                  | Validate product was removed successfully|
-| Was Operation Successful?                   | If removal was successful                |
-| Display success message                     | Show success message                     |
-| User selects "Update Stock"                 | If user selects "Update Stock"           |
-| Prompt for Product Name & new Stock         | Prompt user for product name and stock   |
-| Validate Product Name & new Stock           | Validate product name and new stock      |
-| Are Product Name & new Stock valid?         | If both are valid                        |
-| Update Product Stock in Inventory           | Update product stock in inventory        |
-| Validate Operation Success                  | Validate stock update success            |
-| Was Operation Successful?                   | If update was successful                 |
-| Display success message                     | Show success message                     |
-| User selects "View Products"                | If user selects "View Products"          |
-| Validate Inventory Not Empty                | Check if inventory is empty              |
-| Is Inventory Empty?                         | If inventory is empty                    |
-| Display Empty Inventory Message             | Show "No products" message               |
-| Display All Products in Inventory           | Show full list of products               |
-| User selects "Exit App"                     | If user selects "Exit App"               |
-| Display Exit Message                        | Show exit message                        |
-| Exit the Application                        | Exit program                             |
-| End                                          | End                                      |
+| Flowchart Block | Pseudocode Step                          |
+| --------------- | ---------------------------------------- |
+| Start           | Start                                    |
+| Display Menu    | Display Menu                             |
+| Select Option   | Prompt + Validate Menu Selection         |
+| Add Product     | Prompt name/price/stock, validate, add   |
+| Remove Product  | Prompt name, validate, remove            |
+| Update Stock    | Prompt name & quantity, validate, update |
+| View Products   | Display list or empty message            |
+| Exit App        | Display exit message, end program        |
 
 ### Pseudocode
 
-```plaintext
+#### Program (Main Application Loop)
 
+```plaintext
 START
 
-WHILE condition is true:
+WHILE application is running:
+  DISPLAY Main Menu
+  PROMPT user for menu option
+  VALIDATE menu option
 
-  DISPLAY "Inventory Management System"
-  DISPLAY "1. Add Product"
-  DISPLAY "2. Remove Product"
-  DISPLAY "3. Update Stock"
-  DISPLAY "4. View Products"
-  DISPLAY "0. Exit"
-
-  PROMPT "Select an option (1-5)"
-  READ userInput
-
-  IF the option is not valid:
-    DISPLAY "Error: The selected option is invalid. Choose another one."
-  END IF
-
-  Switch(Menu Selection)
-        Case 1:
-            PROMPT "Please enter the Product Name:"
-            READ productName
-            PROMPT "Please enter the Product Price:
-            READ productPrice
-            PROMPT "Please enter the Product Stock:"
-            READ productStock
-
-            IF productName is not valid:
-              DISPLAY "Error: The product name is not valid."
-            END IF
-
-            IF productPrice is not valid:
-              DISPLAY "Error: The product price is not valid."
-            END IF
-
-            IF productStock is not valid:
-              DISPLAY "Error: The product stock is not valid."
-            END IF
-
-            Add Product to Inventory
-
-            IF product is not in inventory list:
-              DISPLAY "Error: An error occurred with the operation."              
-            END IF
-            
-            DISPLAY "Success: Operation successful."
-            Break
-
-        Case 2:
-            Prompt the User for Product Name
-            Validate Product Name
-            If Product Name is Valid:
-                Remove Product from Inventory
-                Validate Operation Success
-                If Operation was Successful:
-                    DISPLAY success message
-                Else:
-                    DISPLAY error message
-            Else:
-                DISPLAY error message
-            Break
-
-        Case 3:
-            Prompt the User for Product Name & new Stock
-            Validate Product Name & new Stock
-            If Product Name & new Stock are Valid:
-                Update Product Stock in Inventory
-                Validate Operation Success
-                If Operation was Successful:
-                    DISPLAY success message
-                Else:
-                    DISPLAY error message
-            Else:
-                DISPLAY error message
-            Break
-
-        Case 4:
-            Validate Inventory Not Empty
-            If Inventory is Empty:
-                DISPLAY Empty Inventory Message
-            Else:
-                DISPLAY All Products in Inventory
-            Break
-
-        Case 0:
-            DISPLAY Exit message
-            Exit the application
-            Break
-
-        Default:
-            DISPLAY "Error: Invalid option. Plase enter a valid option..."
-            Break
+  SWITCH user option:
+    CASE 1: Handle Add Product
+    CASE 2: Handle Remove Product
+    CASE 3: Handle Update Stock
+    CASE 4: Handle View Products
+    CASE 0: Exit
+    DEFAULT: DISPLAY error message
 
 END WHILE
 
 END
-
 ```
 
-### Tasks
+#### UserInterface
 
-A detailed checklist of development tasks per module will be included here.
+```plaintext
+DisplayWelcome:
+  Clear console
+  Print welcome banner with separators
 
-### Code Components
+DisplayMainMenu:
+  Print menu options (1 to 5, and 0 for Exit)
 
-WIP
+DisplayProductList(products):
+  Print product table header
+  For each product in the list:
+    Print name, price, stock in table format
+
+DisplayError(error):
+  Print separator
+  Print "Error: " + error message or "Unknown error occurred"
+  Print separator
+
+DisplaySuccess(message):
+  Print separator
+  Print "Success: " + message
+  Print separator
+
+PromptForMenuOption:
+  Loop:
+    Prompt user to select an option
+    Read input
+    Validate input using IsValidMenuOption
+    If invalid: show error and repeat
+    Else: break loop
+  Return parsed input as integer
+
+PromptForProductDetails:
+  Prompt for product name (with uniqueness check)
+  Prompt for product price
+  Prompt for product stock
+  Return ProductInput with collected values
+
+PromptForProductName:
+  Return result from generic Prompt with message and IsValidProductName validation
+
+PromptForProductPrice:
+  Return result from generic Prompt with message and IsValidPrice validation
+
+PromptForProductStock:
+  Return result from generic Prompt with message and IsValidStock validation
+
+PromptForRestockAmount:
+  Return result from generic Prompt with message and IsValidStock validation
+
+PromptForQuantity:
+  Return result from generic Prompt with message and IsValidQuantity validation
+
+PromptAndValidateProductName:
+  Loop:
+    Prompt for name
+    If IsUniqueProductName is invalid: show error and repeat
+    Else: return name
+
+Prompt(message, validate, fallbackError):
+  Loop:
+    Display message
+    Read input
+    Validate input using validate function
+    If invalid: show error and repeat
+    Else: return validated value
+```
+
+#### Product
+
+```plaintext
+Initialize Product with name, price, stock:
+  Set Name = name
+  Set Price = price
+  Set Stock = stock
+
+Restock(amount):
+  If amount <= 0:
+    Return invalid result with message "Restock amount must be greater than 0"
+  Increase Stock by amount
+  Return valid result
+
+Sell(quantity):
+  If quantity <= 0:
+    Return invalid result with message "Quantity must be greater than zero"
+  If quantity > Stock:
+    Return invalid result with message "Not enough stock available"
+  Decrease Stock by quantity
+  Return valid result
+```
+
+#### Inventory
+
+```plaintext
+FUNCTION AddProduct(product):
+  ADD product to internal list
+
+FUNCTION RemoveProduct(product):
+  REMOVE product from list
+
+FUNCTION GetProductByName(name):
+  RETURN first match from list by name (case-insensitive)
+
+FUNCTION GetProducts():
+  RETURN read-only list of products
+```
+
+#### ProductService
+
+```plaintext
+FUNCTION Build(input):
+  RETURN new Product with name, price, and stock from input
+
+FUNCTION FindByName(name):
+  RETURN Inventory.FindProductByName(name)
+
+FUNCTION IsDuplicate(product):
+  RETURN TRUE if Inventory.FindProductByName(product.Name) is not null
+  ELSE FALSE
+
+FUNCTION TryAdd(product):
+  CALL Inventory.AddProduct(product)
+  RETURN TRUE if Inventory.FindProductByName(product.Name) is not null
+  ELSE FALSE
+
+FUNCTION TryRemove(product):
+  CALL Inventory.RemoveProduct(product)
+  RETURN TRUE if Inventory.FindProductByName(product.Name) is null
+  ELSE FALSE
+
+FUNCTION RestockProductByName(name, amount):
+  product = Inventory.FindProductByName(name)
+  IF product is null THEN RETURN ValidationResult invalid ("Product not found")
+  CALL product.Restock(amount)
+  RETURN result from Restock
+
+FUNCTION SellProductByName(name, quantity):
+  product = Inventory.FindProductByName(name)
+  IF product is null THEN RETURN ValidationResult invalid ("Product not found")
+  CALL product.Sell(quantity)
+  RETURN result from Sell
+```
+
+#### Validation
+
+```plaintext
+FUNCTION IsValidMenuOption(input):
+  IF input is null OR empty THEN RETURN invalid ("Option cannot be empty")
+  IF input contains non-digit characters THEN RETURN invalid ("Option must contain only digits")
+  IF input cannot be parsed as integer THEN RETURN invalid ("Option must be a valid number")
+  IF parsed value not in range 0–5 THEN RETURN invalid ("Option out of range")
+  RETURN valid with parsed integer
+
+FUNCTION IsValidProductName(input):
+  IF input is null OR empty THEN RETURN invalid ("Name cannot be empty")
+  COUNT digits in input
+  IF digit count > 3 THEN RETURN invalid ("Name contains too many numbers")
+  IF input length < 3 OR > 75 THEN RETURN invalid ("Name length out of bounds")
+  IF input contains characters other than letters, digits, spaces THEN RETURN invalid ("Name contains invalid characters")
+  RETURN valid with input string
+
+FUNCTION IsUniqueProductName(name):
+  IF any product in inventory has same name (case-insensitive) THEN RETURN invalid ("Product already exists")
+  RETURN valid with name
+
+FUNCTION IsValidPrice(input):
+  IF input is null OR empty THEN RETURN invalid ("Price cannot be empty")
+  IF input contains non-digit characters THEN RETURN invalid ("Price cannot contain letters or special characters")
+  IF input cannot be parsed as double THEN RETURN invalid ("Price must be a valid number")
+  IF price < 0 OR > 1,000,000 THEN RETURN invalid ("Price out of range")
+  RETURN valid with parsed double
+
+FUNCTION IsValidStock(input):
+  IF input is null OR empty THEN RETURN invalid ("Stock cannot be empty")
+  IF input contains non-digit characters THEN RETURN invalid ("Stock must contain only digits")
+  IF input cannot be parsed as int THEN RETURN invalid ("Stock must be a valid number")
+  IF stock < 0 OR > 10,000 THEN RETURN invalid ("Stock out of range")
+  RETURN valid with parsed int
+
+FUNCTION IsValidQuantity(input):
+  IF input is null OR empty THEN RETURN invalid ("Quantity cannot be empty")
+  IF input cannot be parsed as int THEN RETURN invalid ("Quantity must be a number")
+  IF quantity <= 0 THEN RETURN invalid ("Quantity must be greater than zero")
+  IF quantity > 10,000 THEN RETURN invalid ("Quantity exceeds the allowed maximum")
+  RETURN valid with parsed int
+```
+
+#### Validation Result
+
+```plaintext
+ValidationResult:
+  Properties:
+    IsValid: boolean
+    ErrorMessage: optional string
+
+ValidationResult<T> (generic version):
+  Properties:
+    IsValid: boolean
+    ErrorMessage: optional string
+    Value: optional value of type T
+```
 
 ## 4. Technology Stack
 
-- Language: C#
-- Platform: .NET Console App
-- IDE: Visual Studio Code
+* **Language**: C#
+* **Platform**: .NET Console Application
+* **IDE**: Visual Studio Code
+
+## 5. Future Improvements
+
+* Add support for product search
+* Introduce unit testing
+* Export inventory to file
+* Add categories or tags for filtering
+
+## 6. Tasks (Module-Level)
+
+* Implement domain models and service logic ✅
+* Centralize validation with generic result ✅
+* Refactor UI prompts for reusability ✅
+* Build application loop with menu routing ✅
+* Structure project with feature-based folders ✅
