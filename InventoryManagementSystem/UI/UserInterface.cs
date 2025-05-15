@@ -7,7 +7,7 @@ public static class UserInterface
 		Console.WriteLine("Welcome to the Inventory Management System!");
 		Console.WriteLine(new string('-', 80));
 	}
-	public static void DisplayMainMenu()
+	public static void DisplayMenuOptions()
 	{
 		Console.WriteLine("1. Add Product");
 		Console.WriteLine("2. Remove Product");

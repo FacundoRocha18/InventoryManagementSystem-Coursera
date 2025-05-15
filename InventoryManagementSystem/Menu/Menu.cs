@@ -8,7 +8,7 @@ public static class Menu
 
 		while (true)
 		{
-			UserInterface.DisplayMainMenu();
+			UserInterface.DisplayMenuOptions();
 
 			option = UserInterface.PromptForMenuOption();
 
