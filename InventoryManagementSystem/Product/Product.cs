@@ -4,36 +4,36 @@ public class Product(string name, double price, int stock)
 	public double Price { get; set; } = price;
 	public int Stock { get; set; } = stock;
 
-	public ValidationResult Restock(int amount)
+	public ValidationResult Restock(int quantity)
 	{
-		if (amount <= 0)
+		if (quantity <= 0)
 		{
 			return new ValidationResult
 			{
 				IsValid = false,
-				ErrorMessage = "Restock amount must be greater than 0."
+				ErrorMessage = "Product Restock Quantity must be greater than 0."
 			};
 		}
 
-		Stock += amount;
+		Stock += quantity;
 
 		return new ValidationResult { IsValid = true };
 	}
 
-	public ValidationResult Sell(int quantity)
+	public ValidationResult<double> Sell(int quantity)
 	{
 		if (quantity <= 0)
 		{
-			return new ValidationResult { IsValid = false, ErrorMessage = "Quantity must be greater than zero." };
+			return new ValidationResult<double> { IsValid = false, ErrorMessage = "Product Quantity must be greater than zero." };
 		}
 
 		if (quantity > Stock)
 		{
-			return new ValidationResult { IsValid = false, ErrorMessage = "Not enough stock available." };
+			return new ValidationResult<double> { IsValid = false, ErrorMessage = "Not enough stock available." };
 		}
 
 		Stock -= quantity;
 
-		return new ValidationResult { IsValid = true };
+		return new ValidationResult<double> { IsValid = true, Value = Price * quantity };
 	}
 }

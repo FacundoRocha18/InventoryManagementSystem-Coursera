@@ -36,13 +36,13 @@ public static class ProductService
 		return product.Restock(amount);
 	}
 
-	public static ValidationResult SellProductByName(string name, int quantity)
+	public static ValidationResult<double> SellProductByName(string name, int quantity)
 	{
 		Product? product = Inventory.FindProductByName(name);
 
 		if (product == null)
 		{
-			return new ValidationResult
+			return new ValidationResult<double>
 			{
 				IsValid = false,
 				ErrorMessage = $"Product '{name}' not found."
