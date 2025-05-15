@@ -17,7 +17,7 @@ public static class UserInterface
 		Console.WriteLine("0. Exit");
 	}
 
-	public static void DisplayProductList(IReadOnlyList<Product> products)
+	public static void DisplayInventory(IReadOnlyList<Product> products)
 	{
 		Console.WriteLine("Products in inventory:");
 		Console.WriteLine(new string('-', 80));

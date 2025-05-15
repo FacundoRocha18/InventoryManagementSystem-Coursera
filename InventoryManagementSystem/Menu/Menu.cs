@@ -95,7 +95,7 @@ public static class Menu
 			return;
 		}
 
-		UserInterface.DisplayProductList(products);
+		UserInterface.DisplayInventory(products);
 	}
 
 	private static void HandleSellProductOption()
