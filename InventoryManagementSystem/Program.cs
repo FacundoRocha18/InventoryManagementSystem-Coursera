@@ -72,9 +72,9 @@
 	private static void HandleRestockProduct()
 	{
 		string name = UserInterface.PromptForProductName();
-		int amount = UserInterface.PromptForRestockAmount();
-		
-		ValidationResult result = ProductService.RestockProductByName(name, amount);
+		int quantity = UserInterface.PromptForProductQuantity();
+
+		ValidationResult result = ProductService.RestockProductByName(name, quantity);
 
 		if (!result.IsValid)
 		{
@@ -82,7 +82,7 @@
 			return;
 		}
 
-		UserInterface.DisplaySuccess($"Product '{name}' restocked by {amount} units.");
+		UserInterface.DisplaySuccess($"Product '{name}' restocked by {quantity} units.");
 	}
 
 	private static void HandleViewProducts()
@@ -101,7 +101,7 @@
 	private static void HandleSellProduct()
 	{
 		string name = UserInterface.PromptForProductName();
-		int quantity = UserInterface.PromptForQuantity();
+		int quantity = UserInterface.PromptForProductQuantity();
 
 		ValidationResult result = ProductService.SellProductByName(name, quantity);
 

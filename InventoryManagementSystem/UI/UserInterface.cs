@@ -71,7 +71,7 @@ public static class UserInterface
 
 	public static ProductInput PromptForProductDetails()
 	{
-		string name = PromptAndValidateProductName();
+		string name = PromptForUniqueProductName();
 		double price = PromptForProductPrice();
 		int stock = PromptForProductStock();
 
@@ -85,35 +85,29 @@ public static class UserInterface
 	public static string PromptForProductName() => Prompt(
 		"Please enter the Product Name: ",
 		Validation.IsValidProductName,
-		"Invalid name input."
+		"Invalid Product Name input."
 	);
 
 	public static double PromptForProductPrice() => Prompt(
 		"Please enter the Product Price: ",
 		Validation.IsValidPrice,
-		"Invalid price input."
+		"Invalid Product Price input."
 	);
 
 	public static int PromptForProductStock() => Prompt(
 		"Please enter the Product Stock: ",
 		Validation.IsValidStock,
-		"Invalid stock input."
+		"Invalid Product Stock input."
 	);
 
-	public static int PromptForRestockAmount() => Prompt(
-		"Please enter the Restock amount: ",
-		Validation.IsValidStock,
-		"Invalid stock input."
-	);
-
-	public static int PromptForQuantity() =>
+	public static int PromptForProductQuantity() =>
 	Prompt(
-		"Please enter the quantity: ",
+		"Please enter the Product Quantity: ",
 		Validation.IsValidQuantity,
-		"Invalid quantity entered."
+		"Invalid Product Quantity entered."
 	);
 
-	private static string PromptAndValidateProductName()
+	private static string PromptForUniqueProductName()
 	{
 		while (true)
 		{
